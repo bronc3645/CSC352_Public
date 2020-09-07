@@ -59,5 +59,11 @@
         {
             Assert.That(Acronym.Abbreviate("The Road _Not_ Taken"), Is.EqualTo("TRNT"));
         }
+
+        [TestCase]
+        public void Numbers_In_Name()
+        {
+            Assert.That(Acronym.Abbreviate("This 1 Acronym Has 2 Numbers"), Is.EqualTo("T1AH2N"));
+        }
     }
 }
