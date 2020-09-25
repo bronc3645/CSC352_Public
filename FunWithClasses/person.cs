@@ -35,12 +35,12 @@ namespace FunWithClasses
                 this.nFirstname = sb.ToString();
             }
         }
-        string Lastname
+        public string Lastname
         {
             set;
             get;
         }
-        DateTime birthdate
+        public DateTime birthdate
         {
             get;
             set;
@@ -62,7 +62,7 @@ namespace FunWithClasses
             {
                 if (this.GetHashCode() == other.GetHashCode())
                 {
-                    if (this.birthdate == other.birthdate)
+                    if (this.firstname==other.firstname && this.Lastname==other.Lastname && this.birthdate == other.birthdate)
                     {
                         isEqual = true;
                     }
