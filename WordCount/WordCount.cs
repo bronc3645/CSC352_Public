@@ -62,13 +62,12 @@ namespace WordCount
             {
                 input = input.Replace(forbiddenchar, string.Empty);
             }
-            if (input.IndexOf("'") != input.LastIndexOf("'"))
+            /*if (input.IndexOf("'") != input.LastIndexOf("'"))
             {
-                while (input.Contains("'"))
-                {
-                    input=input.Replace("'", string.Empty);
-                }
-            }
+                input=input.Replace("'", string.Empty);
+            }*/
+            input = input.TrimStart('\'');
+            input = input.TrimEnd('\'');
             return input;
         }
     }

@@ -148,6 +148,27 @@ namespace WordCount
             };
             Assert.That(actual, Is.EqualTo(expected));
         }
+        [Test]
+        public void With_quotation_and_contration()
+        {
+            IDictionary<string, int> actual = WordCount.CountWords("'don't'");
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "don't"  , 1 }
+            };
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+        [Test]
+        public void With_quotation_multiple_words()
+        {
+            IDictionary<string, int> actual = WordCount.CountWords("'don't care'");
+            Dictionary<string, int> expected = new Dictionary<string, int>
+            {
+                { "don't"  , 1 },
+                {"care",1 }
+            };
+            Assert.That(actual, Is.EqualTo(expected));
+        }
 
         [Test]
         public void Substrings_from_the_beginning()
