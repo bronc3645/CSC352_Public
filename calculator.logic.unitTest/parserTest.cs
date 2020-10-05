@@ -10,10 +10,10 @@ namespace calculator.logic.unitTest
     [TestFixture]
     public class parserTest
     {
-        [TestCase("1+1",2)]
-        public void parseValidInput(string input,int expected)
+        [TestCase("1 + 1","1 1 +")]
+        public void convertToRPN(string input,string expected)
         {
-            int actual = parser.parse(input);
+            string actual = parser.ConvertTorpm(input);
 
             Assert.That(actual, Is.EqualTo(expected));
         }
