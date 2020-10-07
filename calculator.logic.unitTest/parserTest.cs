@@ -11,10 +11,44 @@ namespace calculator.logic.unitTest
     public class parserTest
     {
         [TestCase("1 + 1","1 1 +")]
+        [TestCase("1 + 1 + 1","1 1 1 + +")]
+        [TestCase("1 * 2 + 1","1 2 * 1 +")]
+        [TestCase("1 + 2 * 2 + 1","1 2 2 * 1 + +")]
+        [TestCase("1 * ( 1 + 2 )","1 1 2 + *")]
+        [TestCase("1 + 1 * 2","1 1 2 * +")]
         public void convertToRPN(string input,string expected)
         {
             string actual = parser.ConvertTorpm(input);
 
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+
+        [TestCase("+", "+",true)]
+        [TestCase("+", "-", true)]
+        [TestCase("-", "+", true)]
+        [TestCase("-", "-", true)]
+        [TestCase("+", "*", false)]
+        [TestCase("*", "+", false)]
+        [TestCase("-", "*", false)]
+        [TestCase("*", "-", false)]
+        [TestCase("+", "/", false)]
+        [TestCase("/", "+", false)]
+        [TestCase("-", "/", false)]
+        [TestCase("/", "-", false)]
+        [TestCase("*", "/", true)]
+        [TestCase("/", "*", true)]
+        [TestCase("^", "*", false)]
+        [TestCase("^", "/", false)]
+        [TestCase("^", "+", false)]
+        [TestCase("^", "-", false)]
+        [TestCase("+", "^", false)]
+        [TestCase("-", "^", false)]
+        [TestCase("*", "^", false)]
+        [TestCase("/", "^", false)]
+        [TestCase("^", "^", true)]
+        public void testequalprecidence(string x,string y, bool expected)
+        {
+            bool actual = parser.operatorHasequalpres(x, y);
             Assert.That(actual, Is.EqualTo(expected));
         }
     }

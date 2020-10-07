@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace calculator.logic
 {
@@ -14,7 +13,6 @@ namespace calculator.logic
             Stack<string> operatorstack= new Stack<string>();
 
             string[] split = equation.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            
             foreach(string token in split)
             {
                 if (char.IsNumber(token.First()) || (token.Length > 1 && (token.StartsWith(".") || token.StartsWith("-"))))
@@ -23,10 +21,49 @@ namespace calculator.logic
                 }
                 else
                 {
-                    operatorstack.Push(token);
+                    if (isOperator(token))
+                    {
+                        while (operatorstack.Any() &&
+                            (opperatorHasGreaterPres(operatorstack.Peek(),token)
+                            || (operatorHasequalpres(operatorstack.Peek(),token) && TokenIsLeftAssociative(token))))
+                        {
+
+                        }
+                        operatorstack.Push(token);
+                    }
+                    else if (token.Equals("("))
+                    {
+                        operatorstack.Push(token);
+                    }
+                    else if (token.Equals(")"))
+                    {
+                        try
+                        {
+                            while (operatorstack.Peek() != "(")
+                            {
+                                output.Enqueue(operatorstack.Pop());
+                            }
+                            operatorstack.Pop();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            throw new InvalidOperationException("Unbalanced parens!", ex);
+                        }
+
+                    }
                 }
             }
 
+
+            while(operatorstack.Count>=1)
+            {
+                if (operatorstack.Peek() == "(")
+                {
+                    throw new InvalidOperationException("Unbalance parens!");
+                }
+                output.Enqueue(operatorstack.Pop());
+            }
+            
             StringBuilder sb = new StringBuilder();
 
             foreach (var outputElement in output)
@@ -36,5 +73,73 @@ namespace calculator.logic
             }
             return sb.ToString().TrimEnd();
         }
+
+        public static bool operatorHasequalpres(string v,string token)
+        {
+            if (v == token)
+            {
+                return true;
+            }
+            else
+            {
+                if(
+                    ((v=="+"||v=="-")&&(token=="+"||token=="-"))
+                    || ((v == "*" || v == "/") && (token == "*" || token == "/"))
+                    ||(v=="^"&&token=="^"))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool TokenIsLeftAssociative(string token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool opperatorHasGreaterPres(string v, string token)
+        {
+            return true;
+        }
+
+        private static bool isOperator(string token)
+        {
+            switch (token)
+            {
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                case "^":
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
+
+    /*public class orderOperationComparer : IComparer<string>
+    {
+        public int Compare(string x, string y)
+        {
+            return convertstring(x) - convertstring(y);
+        }
+        public int convertstring(string x)
+        {
+            switch (x)
+            {
+                case "^":
+                    return 3;
+                case "*":
+                case "/":
+                    return 2;
+                case "+":
+                case "-":
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+    }*/
 }
