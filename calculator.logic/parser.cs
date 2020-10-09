@@ -23,13 +23,57 @@ namespace calculator.logic
                 {
                     if (isOperator(token))
                     {
-                        while (operatorstack.Any() &&
+                        /*while (operatorstack.Any() &&
                             (opperatorHasGreaterPres(operatorstack.Peek(),token)
-                            || (operatorHasequalpres(operatorstack.Peek(),token) && TokenIsLeftAssociative(token))))
+                            || (operatorHasequalpres(operatorstack.Peek(),token)
+                            && TokenIsLeftAssociative(token))))
                         {
-
+                        }*/
+                        if (operatorstack.Count() != 0)
+                        {
+                            if (operatorHasequalpres(operatorstack.Peek(), token))
+                            {
+                                operatorstack.Push(token);
+                            }
+                            else if (opperatorHasGreaterPres(operatorstack.Peek(), token))
+                            {
+                                Queue<string> temp = new Queue<string>();
+                                int maxque = output.Count();
+                                int stackcount = operatorstack.Count();
+                                for(int i = 0; i < maxque; i++)
+                                {
+                                    temp.Enqueue(output.Dequeue());
+                                    if (i == maxque-1)
+                                    {
+                                        temp.Enqueue(operatorstack.Pop());
+                                    }
+                                }
+                                while (temp.Any())
+                                {
+                                    output.Enqueue(temp.Dequeue());
+                                }
+                                operatorstack.Push(token);
+                                /*if ((i + 1) != split.Length)
+                                {
+                                    string temp = operatorstack.Pop();
+                                    operatorstack.Push(token);
+                                    operatorstack.Push(temp);
+                                }
+                                else
+                                {
+                                    output.Enqueue(operatorstack.Pop());
+                                    operatorstack.Push(token)
+                                }*/
+                            }
+                            else
+                            {
+                                operatorstack.Push(token);
+                            }
                         }
-                        operatorstack.Push(token);
+                        else
+                        {
+                            operatorstack.Push(token);
+                        }
                     }
                     else if (token.Equals("("))
                     {
@@ -95,12 +139,25 @@ namespace calculator.logic
 
         public static bool TokenIsLeftAssociative(string token)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public static bool opperatorHasGreaterPres(string v, string token)
         {
-            return true;
+            if (v == token)
+            {
+                return false;
+            }
+            else
+            {
+                if(
+                    ((v == "/" || v == "*") && (token == "+" || token == "-"))
+                    || (v == "^"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static bool isOperator(string token)

@@ -14,6 +14,7 @@ namespace calculator.logic.unitTest
         [TestCase("1 + 1 + 1","1 1 1 + +")]
         [TestCase("1 * 2 + 1","1 2 * 1 +")]
         [TestCase("1 + 2 * 2 + 1","1 2 2 * 1 + +")]
+        [TestCase("1 + 2 * 2 + 1 * 2", "1 2 2 * 1 2 * + +")]
         [TestCase("1 * ( 1 + 2 )","1 1 2 + *")]
         [TestCase("1 + 1 * 2","1 1 2 * +")]
         public void convertToRPN(string input,string expected)
@@ -36,6 +37,8 @@ namespace calculator.logic.unitTest
         [TestCase("-", "/", false)]
         [TestCase("/", "-", false)]
         [TestCase("*", "/", true)]
+        [TestCase("*", "*", true)]
+        [TestCase("/", "/", true)]
         [TestCase("/", "*", true)]
         [TestCase("^", "*", false)]
         [TestCase("^", "/", false)]
@@ -49,6 +52,36 @@ namespace calculator.logic.unitTest
         public void testequalprecidence(string x,string y, bool expected)
         {
             bool actual = parser.operatorHasequalpres(x, y);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
+        [TestCase("+", "+", false)]
+        [TestCase("+", "-", false)]
+        [TestCase("-", "+", false)]
+        [TestCase("-", "-", false)]
+        [TestCase("+", "*", false)]
+        [TestCase("*", "+", true)]
+        [TestCase("-", "*", false)]
+        [TestCase("*", "-", true)]
+        [TestCase("+", "/", false)]
+        [TestCase("/", "+", true)]
+        [TestCase("-", "/", false)]
+        [TestCase("/", "-", true)]
+        [TestCase("*", "/", false)]
+        [TestCase("*", "*", false)]
+        [TestCase("/", "/", false)]
+        [TestCase("/", "*", false)]
+        [TestCase("^", "*", true)]
+        [TestCase("^", "/", true)]
+        [TestCase("^", "+", true)]
+        [TestCase("^", "-", true)]
+        [TestCase("+", "^", false)]
+        [TestCase("-", "^", false)]
+        [TestCase("*", "^", false)]
+        [TestCase("/", "^", false)]
+        [TestCase("^", "^", false)]
+        public void testhigherprecidence(string x, string y, bool expected)
+        {
+            bool actual = parser.opperatorHasGreaterPres(x, y);
             Assert.That(actual, Is.EqualTo(expected));
         }
     }
