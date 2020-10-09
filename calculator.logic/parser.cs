@@ -5,7 +5,7 @@ using System.Text;
 
 namespace calculator.logic
 {
-    public class parser
+    public class Parser
     {
         public static string ConvertTorpm(string equation)
         {
@@ -23,17 +23,26 @@ namespace calculator.logic
                 {
                     if (isOperator(token))
                     {
-                        /*while (operatorstack.Any() &&
-                            (opperatorHasGreaterPres(operatorstack.Peek(),token)
-                            || (operatorHasequalpres(operatorstack.Peek(),token)
-                            && TokenIsLeftAssociative(token))))
-                        {
-                        }*/
                         if (operatorstack.Count() != 0)
                         {
                             if (operatorHasequalpres(operatorstack.Peek(), token))
                             {
+                                if (TokenIsLeftAssociative(token))
+                                {
+                                    while (operatorstack.Count() != 0)
+                                    {
+                                        if (operatorHasequalpres(operatorstack.Peek(), token))
+                                        {
+                                            output.Enqueue(operatorstack.Pop());
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
                                 operatorstack.Push(token);
+
                             }
                             else if (opperatorHasGreaterPres(operatorstack.Peek(), token))
                             {
@@ -45,7 +54,18 @@ namespace calculator.logic
                                     temp.Enqueue(output.Dequeue());
                                     if (i == maxque-1)
                                     {
-                                        temp.Enqueue(operatorstack.Pop());
+                                        for (int u = 0; u < stackcount; u++)
+                                        {
+                                            if (opperatorHasGreaterPres(operatorstack.Peek(), token))
+                                            {
+                                                temp.Enqueue(operatorstack.Pop());
+                                            }
+                                            else
+                                            {
+                                                break;
+                                            }
+                                            
+                                        }
                                     }
                                 }
                                 while (temp.Any())
@@ -139,6 +159,10 @@ namespace calculator.logic
 
         public static bool TokenIsLeftAssociative(string token)
         {
+            if (token == "^")
+            {
+                return false;
+            }
             return true;
         }
 
