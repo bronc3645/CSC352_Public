@@ -23,6 +23,7 @@ namespace calculator.logic.unitTest
         [TestCase("( 2 * 2 ) ^ 2","2 2 * 2 ^")]
         [TestCase("3 / 2 * 4","3 2 / 4 *")]
         [TestCase("3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3","3 4 2 * 1 5 - 2 3 ^ ^ / +")]
+        [TestCase("1 + sqrt ( 4 )","1 4 sqrt +")]
         public void convertToRPN(string input,string expected)
         {
             string actual = Parser.ConvertTorpm(input);

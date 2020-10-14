@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 
 namespace calculator.logic
@@ -21,7 +22,11 @@ namespace calculator.logic
                 }
                 else
                 {
-                    if (isOperator(token))
+                    if (isFunction(token))
+                    {
+                        operatorstack.Push(token);
+                    }
+                    else if (isOperator(token))
                     {
                         if (operatorstack.Count() != 0)
                         {
@@ -73,17 +78,6 @@ namespace calculator.logic
                                     output.Enqueue(temp.Dequeue());
                                 }
                                 operatorstack.Push(token);
-                                /*if ((i + 1) != split.Length)
-                                {
-                                    string temp = operatorstack.Pop();
-                                    operatorstack.Push(token);
-                                    operatorstack.Push(temp);
-                                }
-                                else
-                                {
-                                    output.Enqueue(operatorstack.Pop());
-                                    operatorstack.Push(token)
-                                }*/
                             }
                             else
                             {
@@ -108,6 +102,10 @@ namespace calculator.logic
                                 output.Enqueue(operatorstack.Pop());
                             }
                             operatorstack.Pop();
+                            if (operatorstack.Count!=0 && isFunction(operatorstack.Peek()))
+                            {
+                                output.Enqueue(operatorstack.Pop());
+                            }
                         }
                         catch (InvalidOperationException ex)
                         {
@@ -124,6 +122,10 @@ namespace calculator.logic
                 if (operatorstack.Peek() == "(")
                 {
                     throw new InvalidOperationException("Unbalance parens!");
+                }
+                else if (isFunction(operatorstack.Peek()))
+                {
+                    throw new InvalidOperationException("not enough parens for function!");
                 }
                 output.Enqueue(operatorstack.Pop());
             }
@@ -193,6 +195,30 @@ namespace calculator.logic
                 case "*":
                 case "/":
                 case "^":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static bool isFunction(string token)
+        {
+            switch (token)
+            {
+                case "sin":
+                case "cos":
+                case "tan":
+                case "csc":
+                case "sec":
+                case "cot":
+                case "log":
+                case "ln":
+                case "insin":
+                case "incos":
+                case "intan":
+                case "mod":
+                case "sqrt":
+                case "fact":
                     return true;
                 default:
                     return false;

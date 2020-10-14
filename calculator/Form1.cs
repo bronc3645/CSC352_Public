@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using calculator.logic;
 
 namespace calculator
 {
@@ -71,7 +72,7 @@ namespace calculator
         {
             if (this.textBox1.TextLength != 0)
             {
-                this.textBox1.Text += '.';
+                this.textBox1.Text += ".";
             }
             else
             {
@@ -79,27 +80,31 @@ namespace calculator
             }
         }
 
-        private void button11_Click(object sender, EventArgs e)
+        private void add_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += '+';
+            if(this.textBox1.Text.Length==0 && this.history.Text.Length != 0)
+            {
+
+            }
+            this.textBox1.Text += " + ";
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += '-';
+            this.textBox1.Text += " - ";
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += '*';
+            this.textBox1.Text += " * ";
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += '/';
+            this.textBox1.Text += " / ";
         }
 
-        private void button15_Click(object sender, EventArgs e)
+        private void clear_Click(object sender, EventArgs e)
         {
             this.textBox1.Text = string.Empty;
         }
@@ -196,22 +201,27 @@ namespace calculator
                     {
                         if (e.Shift)
                         {
-                            button11_Click(sender, e);
+                            add_Click(sender, e);
                         }
                         else
                         {
-                            //button18
+                            evaluate_Click(sender, e);
                         }
                         break;
                     }
                 case Keys.Add:
                     {
-                        button11_Click(sender, e);
+                        add_Click(sender, e);
                         break;
                     }
                 case Keys.Delete:
                     {
-                        button16_Click(sender, e);
+                        clear_Click(sender, e);
+                        break;
+                    }
+                case Keys.Back:
+                    {
+                        delete_Click(sender, e);
                         break;
                     }
                 default:
@@ -219,6 +229,28 @@ namespace calculator
                         //throw new NotImplementedException();
                         break;
                     }
+            }
+        }
+
+        private void evaluate_Click(object sender, EventArgs e)
+        {
+            string rpn = Parser.ConvertTorpm(textBox1.Text);
+            textBox1.Text = string.Empty;
+            history.Text=(rpn+Environment.NewLine+history.Text);
+        }
+
+        private void delete_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text.Length != 0)
+            {
+                if (textBox1.Text[textBox1.Text.Length - 1] == ' ')
+                {
+                    textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                }
+                else
+                {
+                    textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1);
+                }
             }
         }
     }
