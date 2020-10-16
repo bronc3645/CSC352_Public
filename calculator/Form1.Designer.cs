@@ -147,6 +147,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(92, 119);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(450, 22);
             this.textBox1.TabIndex = 9;
             // 
@@ -257,6 +258,7 @@
             this.exponent.TabIndex = 21;
             this.exponent.Text = "^";
             this.exponent.UseVisualStyleBackColor = true;
+            this.exponent.Click += new System.EventHandler(this.exponent_Click);
             // 
             // sin
             // 
@@ -272,6 +274,7 @@
             this.history.Location = new System.Drawing.Point(92, 23);
             this.history.Multiline = true;
             this.history.Name = "history";
+            this.history.ReadOnly = true;
             this.history.Size = new System.Drawing.Size(450, 78);
             this.history.TabIndex = 23;
             // 

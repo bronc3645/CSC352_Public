@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -140,6 +141,43 @@ namespace calculator.logic
             return sb.ToString().TrimEnd();
         }
 
+        public static string ConvertToInfix(string rpn)
+        {
+            string[] split = rpn.Split(new string[] { " " },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            Stack<string> stack = new Stack<string>();
+
+            for(int i = 0; i < split.Length; i++)
+            {
+                if (isOperator(split[i]))
+                {
+                    string right = stack.Pop();
+                    string left = stack.Pop();
+                    string temp = (left + split[i] + right);
+                    stack.Push(temp);
+                    int j;
+                    for (j=i+1; j < split.Length; j++)
+                    {
+                        if (isOperator(split[j])){
+                            if (opperatorHasGreaterPres(split[j], split[i]))
+                            {
+                                temp = "(" + temp + ")";
+                                stack.Pop();
+                                stack.Push(temp);
+                            }
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    stack.Push(split[i]);
+                }
+            }
+            return stack.Pop();
+        }
+
         public static bool operatorHasequalpres(string v,string token)
         {
             if (v == token)
@@ -225,28 +263,4 @@ namespace calculator.logic
             }
         }
     }
-
-    /*public class orderOperationComparer : IComparer<string>
-    {
-        public int Compare(string x, string y)
-        {
-            return convertstring(x) - convertstring(y);
-        }
-        public int convertstring(string x)
-        {
-            switch (x)
-            {
-                case "^":
-                    return 3;
-                case "*":
-                case "/":
-                    return 2;
-                case "+":
-                case "-":
-                    return 1;
-                default:
-                    return 0;
-            }
-        }
-    }*/
 }

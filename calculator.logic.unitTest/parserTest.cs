@@ -91,5 +91,13 @@ namespace calculator.logic.unitTest
             bool actual = Parser.opperatorHasGreaterPres(x, y);
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [TestCase("3 1 + 2 *", "(3+1)*2")]
+        [TestCase("3 1 * 2 +", "3*1+2")]
+        public void validateConvertToInfix(string rpn, string expected)
+        {
+            string actual = Parser.ConvertToInfix(rpn);
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }

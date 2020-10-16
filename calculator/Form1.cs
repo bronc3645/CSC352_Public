@@ -17,98 +17,6 @@ namespace calculator
         {
             InitializeComponent();
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 1;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 2;
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 3;
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 4;
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 5;
-        }
-        
-        private void button6_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 6;
-        }
-
-        private void button7_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 7;
-        }
-
-        private void button8_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 8;
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 9;
-        }
-
-        private void button10_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += 0;
-        }
-
-        private void button16_Click(object sender, EventArgs e)
-        {
-            if (this.textBox1.TextLength != 0)
-            {
-                this.textBox1.Text += ".";
-            }
-            else
-            {
-                this.textBox1.Text += "0.";
-            }
-        }
-
-        private void add_Click(object sender, EventArgs e)
-        {
-            if(this.textBox1.Text.Length==0 && this.history.Text.Length != 0)
-            {
-
-            }
-            this.textBox1.Text += " + ";
-        }
-
-        private void button12_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += " - ";
-        }
-
-        private void button13_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += " * ";
-        }
-
-        private void button14_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text += " / ";
-        }
-
-        private void clear_Click(object sender, EventArgs e)
-        {
-            this.textBox1.Text = string.Empty;
-        }
-
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             Console.WriteLine($"Recieved {e.KeyData}");
@@ -224,6 +132,22 @@ namespace calculator
                         delete_Click(sender, e);
                         break;
                     }
+                case Keys.Return:
+                    {
+                        evaluate_Click(sender, e);
+                        e.Handled = true;
+                        break;
+                    }
+                case Keys.Divide:
+                    {
+                        button14_Click(sender, e);
+                        break;
+                    }
+                case Keys.Decimal:
+                    {
+                        button16_Click(sender, e);
+                        break;
+                    }
                 default:
                     {
                         //throw new NotImplementedException();
@@ -232,11 +156,119 @@ namespace calculator
             }
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 1;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 2;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 3;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 4;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 5;
+        }
+        
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 6;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 7;
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 8;
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 9;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += 0;
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            if (this.textBox1.TextLength != 0)
+            {
+                if (textBox1.Text.LastIndexOf(" ") != -1)
+                {
+                    if (!textBox1.Text.Substring(textBox1.Text.LastIndexOf(" ")).Contains("."))
+                    {
+                        this.textBox1.Text += ".";
+                    }
+                }
+                else if (!textBox1.Text.Contains("."))
+                {
+                    this.textBox1.Text += ".";
+                }
+            }
+            else
+            {
+                this.textBox1.Text += "0.";
+            }
+        }
+
+        private void add_Click(object sender, EventArgs e)
+        {
+            if(this.textBox1.Text.Length==0 && this.history.Text.Length != 0)
+            {
+
+            }
+            this.textBox1.Text += " + ";
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += " - ";
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += " * ";
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text += " / ";
+        }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            this.textBox1.Text = string.Empty;
+        }
+
+        
+
         private void evaluate_Click(object sender, EventArgs e)
         {
-            string rpn = Parser.ConvertTorpm(textBox1.Text);
-            textBox1.Text = string.Empty;
-            history.Text=(rpn+Environment.NewLine+history.Text);
+            if (textBox1.Text.Length != 0)
+            {
+                string rpn = Parser.ConvertTorpm(textBox1.Text);
+                history.Text = (textBox1.Text + Environment.NewLine + history.Text);
+                history.Text=(Evaluator.Eval(rpn)+Environment.NewLine+history.Text);
+                textBox1.Text = string.Empty;
+
+            }
         }
 
         private void delete_Click(object sender, EventArgs e)
@@ -252,6 +284,19 @@ namespace calculator
                     textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1);
                 }
             }
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void exponent_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
