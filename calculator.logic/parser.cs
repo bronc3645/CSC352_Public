@@ -148,7 +148,7 @@ namespace calculator.logic
 
             Stack<string> stack = new Stack<string>();
 
-            for(int i = 0; i < split.Length; i++)
+            for (int i = 0; i < split.Length; i++)
             {
                 if (isOperator(split[i]))
                 {
@@ -157,9 +157,9 @@ namespace calculator.logic
                     string temp = (left + split[i] + right);
                     stack.Push(temp);
                     int j;
-                    for (j=i+1; j < split.Length; j++)
+                    for (j = i + 1; j < split.Length; j++)
                     {
-                        if (isOperator(split[j])){
+                        if (isOperator(split[j])) {
                             if (opperatorHasGreaterPres(split[j], split[i]))
                             {
                                 temp = "(" + temp + ")";
@@ -170,6 +170,10 @@ namespace calculator.logic
                         }
                     }
                 }
+                /*else if (isFunction(split[i]))
+                {
+
+                }*/
                 else
                 {
                     stack.Push(split[i]);

@@ -40,13 +40,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button10 = new System.Windows.Forms.Button();
             this.button11 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button14 = new System.Windows.Forms.Button();
+            this.multiply = new System.Windows.Forms.Button();
+            this.divide = new System.Windows.Forms.Button();
             this.clear = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
+            this.minus = new System.Windows.Forms.Button();
             this.delete = new System.Windows.Forms.Button();
             this.exponent = new System.Windows.Forms.Button();
             this.sin = new System.Windows.Forms.Button();
@@ -171,25 +171,25 @@
             this.button11.UseVisualStyleBackColor = true;
             this.button11.Click += new System.EventHandler(this.add_Click);
             // 
-            // button13
+            // multiply
             // 
-            this.button13.Location = new System.Drawing.Point(332, 255);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(75, 43);
-            this.button13.TabIndex = 13;
-            this.button13.Text = "*";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.multiply.Location = new System.Drawing.Point(332, 255);
+            this.multiply.Name = "multiply";
+            this.multiply.Size = new System.Drawing.Size(75, 43);
+            this.multiply.TabIndex = 13;
+            this.multiply.Text = "*";
+            this.multiply.UseVisualStyleBackColor = true;
+            this.multiply.Click += new System.EventHandler(this.button13_Click);
             // 
-            // button14
+            // divide
             // 
-            this.button14.Location = new System.Drawing.Point(240, 255);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(75, 43);
-            this.button14.TabIndex = 14;
-            this.button14.Text = "/";
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.divide.Location = new System.Drawing.Point(240, 255);
+            this.divide.Name = "divide";
+            this.divide.Size = new System.Drawing.Size(75, 43);
+            this.divide.TabIndex = 14;
+            this.divide.Text = "/";
+            this.divide.UseVisualStyleBackColor = true;
+            this.divide.Click += new System.EventHandler(this.button14_Click);
             // 
             // clear
             // 
@@ -230,15 +230,15 @@
             this.button18.UseVisualStyleBackColor = true;
             this.button18.Click += new System.EventHandler(this.evaluate_Click);
             // 
-            // button12
+            // minus
             // 
-            this.button12.Location = new System.Drawing.Point(437, 319);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(84, 40);
-            this.button12.TabIndex = 19;
-            this.button12.Text = "-";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.minus.Location = new System.Drawing.Point(437, 319);
+            this.minus.Name = "minus";
+            this.minus.Size = new System.Drawing.Size(84, 40);
+            this.minus.TabIndex = 19;
+            this.minus.Text = "-";
+            this.minus.UseVisualStyleBackColor = true;
+            this.minus.Click += new System.EventHandler(this.button12_Click);
             // 
             // delete
             // 
@@ -287,13 +287,13 @@
             this.Controls.Add(this.sin);
             this.Controls.Add(this.exponent);
             this.Controls.Add(this.delete);
-            this.Controls.Add(this.button12);
+            this.Controls.Add(this.minus);
             this.Controls.Add(this.button18);
             this.Controls.Add(this.button17);
             this.Controls.Add(this.button16);
             this.Controls.Add(this.clear);
-            this.Controls.Add(this.button14);
-            this.Controls.Add(this.button13);
+            this.Controls.Add(this.divide);
+            this.Controls.Add(this.multiply);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.textBox1);
@@ -329,13 +329,13 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button multiply;
+        private System.Windows.Forms.Button divide;
         private System.Windows.Forms.Button clear;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Button button18;
-        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button minus;
         private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Button exponent;
         private System.Windows.Forms.Button sin;

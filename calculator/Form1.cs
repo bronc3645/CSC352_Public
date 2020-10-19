@@ -230,26 +230,86 @@ namespace calculator
 
         private void add_Click(object sender, EventArgs e)
         {
-            if(this.textBox1.Text.Length==0 && this.history.Text.Length != 0)
+            if (this.textBox1.Text.Length == 0)
             {
-
+                if (this.history.Text.Length != 0)
+                {
+                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    textBox1.Text += " + ";
+                }
             }
-            this.textBox1.Text += " + ";
+            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length - 1)
+            {
+                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                this.textBox1.Text += " + ";
+            }
+            else
+            {
+                textBox1.Text += " + ";
+            }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += " - ";
+            if (this.textBox1.Text.Length == 0)
+            {
+                if (this.history.Text.Length != 0)
+                {
+                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    textBox1.Text += " - ";
+                }
+            }
+            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            {
+                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                this.textBox1.Text += " - ";
+            }
+            else
+            {
+                textBox1.Text += " - ";
+            }
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += " * ";
+            if (this.textBox1.Text.Length == 0)
+            {
+                if (this.history.Text.Length != 0)
+                {
+                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    textBox1.Text += " * ";
+                }
+            }
+            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            {
+                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                this.textBox1.Text += " * ";
+            }
+            else
+            {
+                textBox1.Text += " * ";
+            }
         }
 
         private void button14_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += " / ";
+            if (this.textBox1.Text.Length == 0)
+            {
+                if (this.history.Text.Length != 0)
+                {
+                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    textBox1.Text += " / ";
+                }
+            }
+            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            {
+                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                this.textBox1.Text += " / ";
+            }
+            else
+            {
+                textBox1.Text += " / ";
+            }
         }
 
         private void clear_Click(object sender, EventArgs e)
@@ -263,10 +323,13 @@ namespace calculator
         {
             if (textBox1.Text.Length != 0)
             {
-                string rpn = Parser.ConvertTorpm(textBox1.Text);
-                history.Text = (textBox1.Text + Environment.NewLine + history.Text);
-                history.Text=(Evaluator.Eval(rpn)+Environment.NewLine+history.Text);
-                textBox1.Text = string.Empty;
+                if (textBox1.Text.LastIndexOf(" ") != textBox1.Text.Length - 1)
+                {
+                    string rpn = Parser.ConvertTorpm(textBox1.Text);
+                    history.Text = (textBox1.Text + Environment.NewLine + history.Text);
+                    history.Text = (Evaluator.Eval(rpn) + Environment.NewLine + history.Text);
+                    textBox1.Text = string.Empty;
+                }
 
             }
         }
@@ -296,7 +359,23 @@ namespace calculator
 
         private void exponent_Click(object sender, EventArgs e)
         {
-            
+            if (this.textBox1.Text.Length == 0)
+            {
+                if (this.history.Text.Length != 0)
+                {
+                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    textBox1.Text += " ^ ";
+                }
+            }
+            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length - 1)
+            {
+                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                this.textBox1.Text += " ^ ";
+            }
+            else
+            {
+                textBox1.Text += " ^ ";
+            }
         }
     }
 }

@@ -19,5 +19,14 @@ namespace calculator.logic.unitTest
 
             Assert.That(actual, Is.EqualTo(expected));
         }
+
+        [TestCase("3 3 3 + ^","3 6 ^ 729")]
+        [TestCase("3 4 2 * 1 5 - 2 3 ^ ^ / +","")]
+        public void testEvaluationSBS(string input, string expected)
+        {
+            string actual = Evaluator.Eval_stepByStep(input);
+
+            Assert.That(actual, Is.EqualTo(expected));
+        }
     }
 }
