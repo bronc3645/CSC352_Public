@@ -154,7 +154,7 @@ namespace calculator.logic
                 {
                     string right = stack.Pop();
                     string left = stack.Pop();
-                    string temp = (left + split[i] + right);
+                    string temp = (left + " " +split[i]+" " + right);
                     stack.Push(temp);
                     int j;
                     for (j = i + 1; j < split.Length; j++)
@@ -162,7 +162,7 @@ namespace calculator.logic
                         if (isOperator(split[j])) {
                             if (opperatorHasGreaterPres(split[j], split[i]))
                             {
-                                temp = "(" + temp + ")";
+                                temp = "( " + temp + " )";
                                 stack.Pop();
                                 stack.Push(temp);
                             }
@@ -170,10 +170,6 @@ namespace calculator.logic
                         }
                     }
                 }
-                /*else if (isFunction(split[i]))
-                {
-
-                }*/
                 else
                 {
                     stack.Push(split[i]);
