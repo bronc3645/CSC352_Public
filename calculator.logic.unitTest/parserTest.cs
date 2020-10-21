@@ -92,9 +92,9 @@ namespace calculator.logic.unitTest
             Assert.That(actual, Is.EqualTo(expected));
         }
 
-        [TestCase("3 1 + 2 *", "(3+1)*2")]
-        [TestCase("3 1 * 2 +", "3*1+2")]
-        [TestCase("3 4 2 * 1 5 - 2 3 ^ ^ / +", "3+4*2/(1-5)^2^3")]
+        [TestCase("3 1 + 2 *", "( 3 + 1 ) * 2")]
+        [TestCase("3 1 * 2 +", "3 * 1 + 2")]
+        [TestCase("3 4 2 * 1 5 - 2 3 ^ ^ / +", "3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3")]
         public void validateConvertToInfix(string rpn, string expected)
         {
             string actual = Parser.ConvertToInfix(rpn);

@@ -13,6 +13,7 @@ namespace calculator
 {
     public partial class Form1 : Form
     {
+        static int parenthesies = 0;
         public Form1()
         {
             InitializeComponent();
@@ -24,85 +25,107 @@ namespace calculator
             switch (e.KeyCode)
             {
                 case Keys.D0:
+                    {
+                        if (e.Shift)
+                        {
+                            closeParenth(sender, e);
+                        }
+                        else
+                        {
+                            Zero_Click(sender, e);
+                        }
+                        break;
+                    }
                 case Keys.NumPad0:
                     {
-                        button10_Click(sender, e);
+                        Zero_Click(sender, e);
                         break;
                     }
                 case Keys.D1:
                 case Keys.NumPad1:
                     {
-                        button1_Click(sender, e);
+                        One_Click(sender, e);
                         break;
                     }
                 case Keys.D2:
                 case Keys.NumPad2:
                     {
-                        button2_Click(sender, e);
+                        Two_Click(sender, e);
                         break;
                     }
                 case Keys.D3:
                 case Keys.NumPad3:
                     {
-                        button3_Click(sender, e);
+                        Three_Click(sender, e);
                         break;
                     }
                 case Keys.D4:
                 case Keys.NumPad4:
                     {
-                        button4_Click(sender, e);
+                        Four_Click(sender, e);
                         break;
                     }
                 case Keys.D5:
                 case Keys.NumPad5:
                     {
-                        button5_Click(sender, e);
+                        Five_Click(sender, e);
                         break;
                     }
                 case Keys.D6:
                 case Keys.NumPad6:
                     {
-                        button6_Click(sender, e);
+                        Six_Click(sender, e);
                         break;
                     }
                 case Keys.D7:
                 case Keys.NumPad7:
                     {
-                        button7_Click(sender, e);
+                        Seven_Click(sender, e);
                         break;
                     }
                 case Keys.D8:
                     {
                         if (e.Shift)
                         {
-                            button13_Click(sender, e);
+                            Multiply_Click(sender, e);
                         }
                         else
                         {
-                            button8_Click(sender, e);
+                            Eight_Click(sender, e);
                         }
                         break;
                     }
                 case Keys.NumPad8:
                     {
-                        button8_Click(sender, e);
+                        Eight_Click(sender, e);
                         break;
                     }
                 case Keys.D9:
+                    {
+                        if (e.Shift)
+                        {
+                            openParenth(sender, e);
+                        }
+                        else
+                        {
+                            Nine_Click(sender, e);
+                        }
+                        break;
+                    }
                 case Keys.NumPad9:
                     {
-                        button9_Click(sender, e);
+                        Nine_Click(sender, e);
                         break;
                     }
                 case Keys.Subtract:
                 case Keys.OemMinus:
                     {
-                        button12_Click(sender, e);
+                        Minus_Click(sender, e);
                         break;
                     }
                 case Keys.Multiply:
                     {
-                        button13_Click(sender, e);
+                        Multiply_Click(sender, e);
                         break;
                     }
                 case Keys.Oemplus:
@@ -140,12 +163,12 @@ namespace calculator
                     }
                 case Keys.Divide:
                     {
-                        button14_Click(sender, e);
+                        Divide_Click(sender, e);
                         break;
                     }
                 case Keys.Decimal:
                     {
-                        button16_Click(sender, e);
+                        Decimal_Click(sender, e);
                         break;
                     }
                 default:
@@ -156,179 +179,211 @@ namespace calculator
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void One_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 1;
+            this.currentcal.Text += 1;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Two_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 2;
+            this.currentcal.Text += 2;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Three_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 3;
+            this.currentcal.Text += 3;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Four_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 4;
+            this.currentcal.Text += 4;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void Five_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 5;
+            this.currentcal.Text += 5;
         }
         
-        private void button6_Click(object sender, EventArgs e)
+        private void Six_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 6;
+            this.currentcal.Text += 6;
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void Seven_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 7;
+            this.currentcal.Text += 7;
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void Eight_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 8;
+            this.currentcal.Text += 8;
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void Nine_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 9;
+            this.currentcal.Text += 9;
         }
 
-        private void button10_Click(object sender, EventArgs e)
+        private void Zero_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text += 0;
+            this.currentcal.Text += 0;
         }
 
-        private void button16_Click(object sender, EventArgs e)
+        private void Decimal_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.TextLength != 0)
+            if (this.currentcal.TextLength != 0)
             {
-                if (textBox1.Text.LastIndexOf(" ") != -1)
+                if (currentcal.Text.LastIndexOf(" ") != -1)
                 {
-                    if (!textBox1.Text.Substring(textBox1.Text.LastIndexOf(" ")).Contains("."))
+                    if (!currentcal.Text.Substring(currentcal.Text.LastIndexOf(" ")).Contains("."))
                     {
-                        this.textBox1.Text += ".";
+                        this.currentcal.Text += ".";
                     }
                 }
-                else if (!textBox1.Text.Contains("."))
+                else if (!currentcal.Text.Contains("."))
                 {
-                    this.textBox1.Text += ".";
+                    this.currentcal.Text += ".";
                 }
             }
             else
             {
-                this.textBox1.Text += "0.";
+                this.currentcal.Text += "0.";
             }
         }
 
         private void add_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text.Length == 0)
+            if (this.currentcal.Text.Length == 0)
             {
                 if (this.history.Text.Length != 0)
                 {
-                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
-                    textBox1.Text += " + ";
+                    currentcal.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    currentcal.Text += " + ";
                 }
             }
-            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length - 1)
+            else if (this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length - 1)
             {
-                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
-                this.textBox1.Text += " + ";
+                if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == '(')
+                {
+                    Form1.parenthesies--;
+                }
+                else if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == ')')
+                {
+                    Form1.parenthesies++;
+                }
+                this.currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
+                this.currentcal.Text += " + ";
             }
             else
             {
-                textBox1.Text += " + ";
+                currentcal.Text += " + ";
             }
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void Minus_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text.Length == 0)
+            if (this.currentcal.Text.Length == 0)
             {
                 if (this.history.Text.Length != 0)
                 {
-                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
-                    textBox1.Text += " - ";
+                    currentcal.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    currentcal.Text += " - ";
                 }
             }
-            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            else if (this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length-1)
             {
-                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
-                this.textBox1.Text += " - ";
+                if(this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == '(')
+                {
+                    Form1.parenthesies--;
+                }
+                else if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == ')')
+                {
+                    Form1.parenthesies++;
+                }
+                this.currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
+                this.currentcal.Text += " - ";
             }
             else
             {
-                textBox1.Text += " - ";
+                currentcal.Text += " - ";
             }
         }
 
-        private void button13_Click(object sender, EventArgs e)
+        private void Multiply_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text.Length == 0)
+            if (this.currentcal.Text.Length == 0)
             {
                 if (this.history.Text.Length != 0)
                 {
-                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
-                    textBox1.Text += " * ";
+                    currentcal.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    currentcal.Text += " * ";
                 }
             }
-            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            else if (this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length-1)
             {
-                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
-                this.textBox1.Text += " * ";
+                if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == '(')
+                {
+                    Form1.parenthesies--;
+                }
+                else if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == ')')
+                {
+                    Form1.parenthesies++;
+                }
+                this.currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
+                this.currentcal.Text += " * ";
             }
             else
             {
-                textBox1.Text += " * ";
+                currentcal.Text += " * ";
             }
         }
 
-        private void button14_Click(object sender, EventArgs e)
+        private void Divide_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text.Length == 0)
+            if (this.currentcal.Text.Length == 0)
             {
                 if (this.history.Text.Length != 0)
                 {
-                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
-                    textBox1.Text += " / ";
+                    currentcal.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    currentcal.Text += " / ";
                 }
             }
-            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length-1)
+            else if (this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length-1)
             {
-                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
-                this.textBox1.Text += " / ";
+                if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == '(')
+                {
+                    Form1.parenthesies--;
+                }
+                else if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == ')')
+                {
+                    Form1.parenthesies++;
+                }
+                this.currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
+                this.currentcal.Text += " / ";
             }
             else
             {
-                textBox1.Text += " / ";
+                currentcal.Text += " / ";
             }
         }
 
         private void clear_Click(object sender, EventArgs e)
         {
-            this.textBox1.Text = string.Empty;
+            this.currentcal.Text = string.Empty;
         }
 
         
 
         private void evaluate_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length != 0)
+            if (currentcal.Text.Length != 0)
             {
-                if (textBox1.Text.LastIndexOf(" ") != textBox1.Text.Length - 1)
+                if (currentcal.Text.LastIndexOf(" ") != currentcal.Text.Length - 1)
                 {
-                    string rpn = Parser.ConvertTorpm(textBox1.Text);
-                    history.Text = (textBox1.Text + Environment.NewLine + history.Text);
+                    string rpn = Parser.ConvertTorpm(currentcal.Text);
+                    history.Text = (currentcal.Text + Environment.NewLine + history.Text);
                     history.Text = (Evaluator.Eval(rpn) + Environment.NewLine + history.Text);
-                    textBox1.Text = string.Empty;
+                    currentcal.Text = string.Empty;
                 }
 
             }
@@ -336,15 +391,23 @@ namespace calculator
 
         private void delete_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text.Length != 0)
+            if (currentcal.Text.Length != 0)
             {
-                if (textBox1.Text[textBox1.Text.Length - 1] == ' ')
+                if (currentcal.Text[currentcal.Text.Length - 1] == ' ')
                 {
-                    textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
+                    if (currentcal.Text[currentcal.Text.Length-2] == '(')
+                    {
+                        Form1.parenthesies--;
+                    }
+                    else if (currentcal.Text[currentcal.Text.Length - 2] == ')')
+                    {
+                        Form1.parenthesies++;
+                    } 
+                    currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
                 }
                 else
                 {
-                    textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 1);
+                    currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 1);
                 }
             }
         }
@@ -359,22 +422,68 @@ namespace calculator
 
         private void exponent_Click(object sender, EventArgs e)
         {
-            if (this.textBox1.Text.Length == 0)
+            if (this.currentcal.Text.Length == 0)
             {
                 if (this.history.Text.Length != 0)
                 {
-                    textBox1.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
-                    textBox1.Text += " ^ ";
+                    currentcal.Text += history.Text.Substring(0, history.Text.IndexOf(Environment.NewLine));
+                    currentcal.Text += " ^ ";
                 }
             }
-            else if (this.textBox1.Text.LastIndexOf(" ") == this.textBox1.Text.Length - 1)
+            else if (this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length - 1)
             {
-                this.textBox1.Text = textBox1.Text.Substring(0, textBox1.Text.Length - 3);
-                this.textBox1.Text += " ^ ";
+                if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == '(')
+                {
+                    Form1.parenthesies--;
+                }
+                else if (this.currentcal.Text[this.currentcal.Text.LastIndexOf(" ") - 1] == ')')
+                {
+                    Form1.parenthesies++;
+                }
+                this.currentcal.Text = currentcal.Text.Substring(0, currentcal.Text.Length - 3);
+                this.currentcal.Text += " ^ ";
             }
             else
             {
-                textBox1.Text += " ^ ";
+                currentcal.Text += " ^ ";
+            }
+        }
+
+        private void openParenth(object sender,EventArgs e)
+        {
+            this.currentcal.Text += " ( ";
+            Form1.parenthesies++;
+        }
+
+        private void closeParenth(object sender, EventArgs e)
+        {
+            if(currentcal.Text.LastIndexOf(" ") != currentcal.Text.Length - 1)
+            {
+                this.currentcal.Text += " ) ";
+                        Form1.parenthesies--;
+            }
+            
+        }
+
+        private void parenth_Click(object sender, EventArgs e)
+        {
+            if (this.currentcal.Text.Contains("(")&&Form1.parenthesies!=0)
+            {
+                if(this.currentcal.Text.LastIndexOf(" ") == this.currentcal.Text.Length - 1)
+                {
+                    this.currentcal.Text += " ( ";
+                    Form1.parenthesies++;
+                }
+                else
+                {
+                    this.currentcal.Text += " ) ";
+                    Form1.parenthesies--;
+                }
+            }
+            else
+            {
+                this.currentcal.Text += " ( ";
+                Form1.parenthesies++;
             }
         }
     }

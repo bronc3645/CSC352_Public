@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace calculator.logic
 {
@@ -44,10 +43,6 @@ namespace calculator.logic
                                 stack.Push("" + (Math.Pow(left, right)));
                                 break;
                             }
-                        default:
-                            {
-                                break;
-                            }
                     }
                 }
                 else{
@@ -85,8 +80,8 @@ namespace calculator.logic
                         case "+":
                             {
                                 stack.Push("" + (left + right));
-                                //result.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
-                                //result.AppendLine();
+                                //infixresult.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
+                                //infixresult.AppendLine();
                                 while (stack.Count != 0)
                                 {
                                     temp.Push(stack.Pop());
@@ -108,8 +103,8 @@ namespace calculator.logic
                         case "-":
                             {
                                 stack.Push("" + (left - right));
-                                //result.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
-                                //result.AppendLine();
+                                //infixresult.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
+                                //infixresult.AppendLine();
                                 while (stack.Count != 0)
                                 {
                                     temp.Push(stack.Pop());
@@ -131,8 +126,8 @@ namespace calculator.logic
                         case "*":
                             {
                                 stack.Push("" + (left * right));
-                                //result.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
-                                //result.AppendLine();
+                                //infixresult.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
+                                //infixresult.AppendLine();
                                 while (stack.Count != 0)
                                 {
                                     temp.Push(stack.Pop());
@@ -154,8 +149,8 @@ namespace calculator.logic
                         case "/":
                             {
                                 stack.Push("" + (left / right));
-                                //result.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
-                                //result.AppendLine();
+                                //infixresult.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
+                                //infixresult.AppendLine();
                                 while (stack.Count != 0)
                                 {
                                     temp.Push(stack.Pop());
@@ -177,8 +172,8 @@ namespace calculator.logic
                         case "^":
                             {
                                 stack.Push("" + (Math.Pow(left, right)));
-                                //result.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
-                                //result.AppendLine();
+                                //infixresult.Append(Parser.ConvertToInfix(GeneateCurrentRPN(stack, split.Skip(i + 1))));
+                                //infixresult.AppendLine();
                                 while (stack.Count != 0)
                                 {
                                     temp.Push(stack.Pop());
@@ -197,10 +192,6 @@ namespace calculator.logic
                                 infixresult.Append(Parser.ConvertToInfix(result.ToString().Substring(0, result.ToString().LastIndexOf("\r\n"))));
                                 break;
                             }
-                        default:
-                            {
-                                break;
-                            }
                     }
                 }
                 else
@@ -215,7 +206,7 @@ namespace calculator.logic
         {
             StringBuilder currentRPN = new StringBuilder();
 
-            foreach (var current in evaluatorStack)
+            foreach (var current in evaluatorStack.Reverse())
             {
                 currentRPN.Append($"{current} ");
             }
