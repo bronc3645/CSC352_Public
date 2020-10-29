@@ -1,27 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MapManager
 {
     public partial class Form1 : Form
     {
-        Bitmap renderImange = null;
+        Bitmap renderImage = new Bitmap("C:/Users/kingd/Documents/GitHub/CSC352_Public/MapManager/Assets/JPG Maps/ascent_callouts.jpg");
         Bitmap overlayImage = null;
         Bitmap combinedImage = null;
         Point overlayLocation = new Point(0,0);
+        int orginalsizeX = 0;
+        int orginalsizey = 0;
+        double scalex = 0;
+        double scaley = 0;
 
         public Form1()
         {
             InitializeComponent();
-            renderImange = new Bitmap(mapPictureBox.Image);
+            orginalsizeX = renderImage.Width;
+            orginalsizey = renderImage.Height;
+            renderImage = new Bitmap(mapPictureBox.Image);
+            scalex = (double)(Decimal.Divide(orginalsizeX,mapPictureBox.Width));
+            scaley = (double)Decimal.Divide(orginalsizey,mapPictureBox.Height);
         }
 
         private void assetBox_Click(object sender, EventArgs e)
@@ -32,12 +33,12 @@ namespace MapManager
 
         private void showCombinedImage()
         {
-            if (renderImange == null && overlayImage == null)
+            if (renderImage == null && overlayImage == null)
             {
                 return;
             }
 
-            mapPictureBox.Image = renderImange;
+            mapPictureBox.Image = renderImage;
 
             if (combinedImage != null)
             {
@@ -45,7 +46,7 @@ namespace MapManager
                 combinedImage = null;
             }
 
-            combinedImage = new Bitmap(renderImange);
+            combinedImage = new Bitmap(renderImage);
 
             using (Graphics combiner = Graphics.FromImage(combinedImage))
             {
@@ -80,9 +81,9 @@ namespace MapManager
             {
                 return;
             }
-            Console.WriteLine(e.X + "  " + e.Y);
-            overlayLocation=new Point(e.X, e.Y);
-
+            int x = (int)( e.X * scalex);
+            int y = (int)(e.Y * scaley);
+            overlayLocation=new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
             showCombinedImage();
         }
     }
