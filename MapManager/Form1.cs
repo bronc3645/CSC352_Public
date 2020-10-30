@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace MapManager
@@ -9,20 +11,34 @@ namespace MapManager
         Bitmap renderImage = new Bitmap("C:/Users/kingd/Documents/GitHub/CSC352_Public/MapManager/Assets/JPG Maps/ascent_callouts.jpg");
         Bitmap overlayImage = null;
         Bitmap combinedImage = null;
-        Point overlayLocation = new Point(0,0);
-        int orginalsizeX = 0;
-        int orginalsizey = 0;
-        double scalex = 0;
-        double scaley = 0;
+        Point overlayLocation = new Point(0, 0);
+
+        List<Layer> layers= new List<Layer>();
+        
+        decimal scalex = 0;
+        decimal scaley = 0;
 
         public Form1()
         {
             InitializeComponent();
-            orginalsizeX = renderImage.Width;
-            orginalsizey = renderImage.Height;
-            renderImage = new Bitmap(mapPictureBox.Image);
-            scalex = (double)(Decimal.Divide(orginalsizeX,mapPictureBox.Width));
-            scaley = (double)Decimal.Divide(orginalsizey,mapPictureBox.Height);
+            mapPictureBox.Image = renderImage;
+            mapPictureBox_Resize(this, new EventArgs());
+            layers.Add(new Layer() { FileName = "C:/Users/kingd/Documents/GitHub/CSC352_Public/MapManager/Assets/JPG Maps/ascent_callouts.jpg",
+                current = new Bitmap(mapPictureBox.Image),
+                Location = new Point(0, 0) });
+            renderImage = RenderLayer(layers);
+        }
+
+        private Bitmap RenderLayer(List<Layer> layers)
+        {
+            return layers.First().current;
+
+            //Bitmap render = new Bitmap();
+
+            //foreach(var layer in layers)
+            //{
+
+            //}
         }
 
         private void assetBox_Click(object sender, EventArgs e)
@@ -55,23 +71,7 @@ namespace MapManager
 
             mapPictureBox.Image = combinedImage;
 
-            /*// If there's no background image, do nothing.
-            if (renderImange == null) return;
 
-            // Copy the background.
-            combinedImage= new Bitmap(renderImange);
-
-            // Add the overlay.
-            if (overlayImage != null)
-            {
-                using (Graphics gr = Graphics.FromImage(combinedImage))
-                {
-                    gr.DrawImage(overlayImage, overlayLocation);
-                }
-            }
-
-            // Display the result.
-            mapPictureBox.Image = combinedImage;*/
 
         }
 
@@ -81,10 +81,29 @@ namespace MapManager
             {
                 return;
             }
-            int x = (int)( e.X * scalex);
+            int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
-            overlayLocation=new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
+            overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
             showCombinedImage();
+        }
+
+        private void mapPictureBox_Click(object sender, EventArgs e)
+        {
+            if (overlayImage == null)
+            {
+                return;
+            }
+            overlayImage.Dispose();
+            overlayImage = null;
+            mapPictureBox.Cursor = Cursors.Default;
+            renderImage.Dispose();
+            renderImage = new Bitmap(combinedImage);
+        }
+
+        private void mapPictureBox_Resize(object sender, EventArgs e)
+        {
+            scalex = Decimal.Divide(renderImage.Width, mapPictureBox.Width);
+            scaley = Decimal.Divide(renderImage.Height, mapPictureBox.Height);
         }
     }
 }

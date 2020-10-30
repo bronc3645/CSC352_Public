@@ -66,8 +66,8 @@
             this.primaryVerticalLayout.Location = new System.Drawing.Point(0, 0);
             this.primaryVerticalLayout.Name = "primaryVerticalLayout";
             this.primaryVerticalLayout.RowCount = 1;
-            this.primaryVerticalLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.primaryVerticalLayout.Size = new System.Drawing.Size(1127, 826);
+            this.primaryVerticalLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.primaryVerticalLayout.Size = new System.Drawing.Size(765, 549);
             this.primaryVerticalLayout.TabIndex = 3;
             // 
             // PrimaryHorizontalTable
@@ -86,7 +86,7 @@
             this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.PrimaryHorizontalTable.Size = new System.Drawing.Size(202, 820);
+            this.PrimaryHorizontalTable.Size = new System.Drawing.Size(202, 543);
             this.PrimaryHorizontalTable.TabIndex = 4;
             // 
             // comboBox1
@@ -119,18 +119,20 @@
             this.mapPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("mapPictureBox.Image")));
             this.mapPictureBox.Location = new System.Drawing.Point(211, 3);
             this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(913, 820);
+            this.mapPictureBox.Size = new System.Drawing.Size(551, 543);
             this.mapPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mapPictureBox.TabIndex = 0;
             this.mapPictureBox.TabStop = false;
+            this.mapPictureBox.Click += new System.EventHandler(this.mapPictureBox_Click);
             this.mapPictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPictureBox_MouseMove);
+            this.mapPictureBox.Resize += new System.EventHandler(this.mapPictureBox_Resize);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1127, 826);
+            this.ClientSize = new System.Drawing.Size(765, 549);
             this.Controls.Add(this.primaryVerticalLayout);
             this.Name = "Form1";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
