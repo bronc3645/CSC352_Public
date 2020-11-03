@@ -31,14 +31,19 @@ namespace MapManager
 
         private Bitmap RenderLayer(List<Layer> layers)
         {
-            return layers.First().current;
+            Bitmap temp=new Bitmap(layers.First().current);
 
-            //Bitmap render = new Bitmap();
-
-            //foreach(var layer in layers)
-            //{
-
-            //}
+            using (Graphics combiner = Graphics.FromImage(temp))
+            {
+                foreach (Layer lay in layers)
+                {
+                    if (!lay.Equals(layers.First())) {
+                        Console.WriteLine(temp.Width + "  " + temp.Height);
+                        combiner.DrawImage(lay.current, lay.Location);
+                    }
+                }
+            }
+            return temp;
         }
 
         private void assetBox_Click(object sender, EventArgs e)
@@ -93,11 +98,18 @@ namespace MapManager
             {
                 return;
             }
+
+            Layer temp = new Layer() { current = new Bitmap(overlayImage), Location = overlayLocation, FileName = "" };
+            layers.Add(temp);
+
             overlayImage.Dispose();
             overlayImage = null;
+            overlayLocation = new Point(0, 0);
+
             mapPictureBox.Cursor = Cursors.Default;
             renderImage.Dispose();
-            renderImage = new Bitmap(combinedImage);
+            renderImage = new Bitmap(RenderLayer(layers));
+            mapPictureBox.Image = renderImage;
         }
 
         private void mapPictureBox_Resize(object sender, EventArgs e)
