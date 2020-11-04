@@ -7,8 +7,19 @@ using System.Threading.Tasks;
 
 namespace MapManager
 {
-    class Layer
+    public class Layer
     {
+        public Layer()
+        {
+        }
+
+        public Layer(string filePath)
+        {
+            current = new Bitmap(filePath);
+            FileName = filePath;
+            Location = new Point(0, 0);
+        }
+
         public Bitmap current { get; set; }
         
         public Point Location { get; set; }
