@@ -8,7 +8,7 @@ namespace MapManager
 {
     public partial class Form1 : Form
     {
-        Bitmap renderImage = new Bitmap("C:/Users/kingd/Documents/GitHub/CSC352_Public/MapManager/Assets/JPG Maps/ascent_callouts.jpg");
+        Bitmap renderImage = new Bitmap(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg");
         Bitmap overlayImage = null;
         Bitmap combinedImage = null;
         Point overlayLocation = new Point(0, 0);
@@ -23,27 +23,27 @@ namespace MapManager
             InitializeComponent();
             mapPictureBox.Image = renderImage;
             mapPictureBox_Resize(this, new EventArgs());
-            layers.Add(new Layer() { FileName = "C:/Users/kingd/Documents/GitHub/CSC352_Public/MapManager/Assets/JPG Maps/ascent_callouts.jpg",
+            layers.Add(new Layer() { FileName = @"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg",
                 current = new Bitmap(mapPictureBox.Image),
                 Location = new Point(0, 0) });
-            renderImage = RenderLayer(layers);
+            renderImage = RenderLayer();
         }
 
-        private Bitmap RenderLayer(List<Layer> layers)
+        private Bitmap RenderLayer()
         {
-            Bitmap temp=new Bitmap(layers.First().current);
+            return Renderer.RenderLayers(layers, mapPictureBox.Image.Width,mapPictureBox.Image.Height);
+            /*Bitmap temp=new Bitmap(layers.First().current);
 
             using (Graphics combiner = Graphics.FromImage(temp))
             {
                 foreach (Layer lay in layers)
                 {
                     if (!lay.Equals(layers.First())) {
-                        Console.WriteLine(temp.Width + "  " + temp.Height);
                         combiner.DrawImage(lay.current, lay.Location);
                     }
                 }
             }
-            return temp;
+            return temp;*/
         }
 
         private void assetBox_Click(object sender, EventArgs e)
@@ -86,8 +86,10 @@ namespace MapManager
             {
                 return;
             }
+            mousePx.Text = e.X+"  "+e.Y;
             int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
+            mousePy.Text = (x - overlayImage.Width / 2) + "    " + (y - overlayImage.Height / 2);
             overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
             showCombinedImage();
         }
@@ -99,8 +101,7 @@ namespace MapManager
                 return;
             }
 
-            Layer temp = new Layer() { current = new Bitmap(overlayImage), Location = overlayLocation, FileName = "" };
-            layers.Add(temp);
+            layers.Add(new Layer() { current = new Bitmap(overlayImage), Location = overlayLocation, FileName = "" });
 
             overlayImage.Dispose();
             overlayImage = null;
@@ -108,7 +109,7 @@ namespace MapManager
 
             mapPictureBox.Cursor = Cursors.Default;
             renderImage.Dispose();
-            renderImage = new Bitmap(RenderLayer(layers));
+            renderImage = new Bitmap(RenderLayer());
             mapPictureBox.Image = renderImage;
         }
 

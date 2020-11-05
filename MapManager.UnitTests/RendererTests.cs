@@ -21,6 +21,22 @@
             string bitmapPath = Path.Combine(TestContext.CurrentContext.TestDirectory, $"{TestContext.CurrentContext.Test.Name}.bmp");
             render.Save(bitmapPath);
         }
+
+        [Test]
+        public void GenerateGrid()
+        {
+            Bitmap paper = new Bitmap(1001, 1001);
+            using (Graphics g = Graphics.FromImage(paper))
+            {
+                for(int i = 0; i <= 1000; i += 10)
+                {
+                    g.DrawLine(new Pen(Color.Black), new Point(i, 0), new Point(i, 1000));
+                    g.DrawLine(new Pen(Color.Black), new Point(0, i), new Point(1000, i));
+                }
+            }
+            string savePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "Grid.bmp");
+            paper.Save(savePath);
+        }
     }
 
     internal class RenderLayer_ValidArguments_Tests : IEnumerable
@@ -31,14 +47,14 @@
                 (
                 new Layer[]
                 {
-                    new Layer(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg"),
+                    new Layer(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager.UnitTests\bin\Debug\Grid.bmp"),
                     new Layer(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\Agents\Controllers\Omen_artwork.png")
                     {
-                        Location = new Point(206, 77)
+                        Location = new Point(206, 24)
                     }
                 },
-                1000,
-                1054
+                1001,
+                1001
                 ).SetName("CenteredImage");
         }
     }
