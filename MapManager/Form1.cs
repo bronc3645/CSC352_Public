@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace MapManager
@@ -13,10 +15,12 @@ namespace MapManager
         Bitmap combinedImage = null;
         Point overlayLocation = new Point(0, 0);
 
-        List<Layer> layers= new List<Layer>();
+        BindingList<Layer> layers= new BindingList<Layer>();
         
         decimal scalex = 0;
         decimal scaley = 0;
+
+        bool edittingImage = false;
 
         public Form1()
         {
@@ -27,6 +31,20 @@ namespace MapManager
                 current = new Bitmap(mapPictureBox.Image),
                 Location = new Point(0, 0) });
             renderImage = RenderLayer();
+
+            //binding the combobox to the layers list
+            BindingSource layersbindingsource = new BindingSource();
+            layersbindingsource.DataSource = layers;
+            LayerList.DataSource = layersbindingsource.DataSource;
+            LayerList.DisplayMember = "Name";
+            LayerList.ValueMember = "current";
+
+            this.MouseWheel += Form1_MouseWheel;
+        }
+
+        private void Form1_MouseWheel(object sender, MouseEventArgs e)
+        {
+
         }
 
         private Bitmap RenderLayer()
@@ -50,6 +68,8 @@ namespace MapManager
         {
             overlayImage = new Bitmap(assetBox.Image);
             mapPictureBox.Cursor = Cursors.Cross;
+            edittingImage = true;
+            debugStatis.Text = "in edit mode";
         }
 
         private void showCombinedImage()
@@ -111,12 +131,26 @@ namespace MapManager
             renderImage.Dispose();
             renderImage = new Bitmap(RenderLayer());
             mapPictureBox.Image = renderImage;
+            edittingImage = false;
+            debugStatis.Text = "not in edit mode";
         }
 
         private void mapPictureBox_Resize(object sender, EventArgs e)
         {
             scalex = Decimal.Divide(renderImage.Width, mapPictureBox.Width);
             scaley = Decimal.Divide(renderImage.Height, mapPictureBox.Height);
+        }
+
+        private void LayerList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if(LayerList.SelectedValue is Bitmap)
+            {
+                Layerspic.Image = LayerList.SelectedValue as Bitmap;
+            }
+            else if(LayerList.SelectedValue is Layer)
+            {
+                Layerspic.Image = (LayerList.SelectedValue as Layer).current;
+            }
         }
     }
 }

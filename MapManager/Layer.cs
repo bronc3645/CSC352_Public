@@ -11,10 +11,12 @@ namespace MapManager
     {
         public Layer()
         {
+            Name = Guid.NewGuid().ToString("D");
         }
 
         public Layer(string filePath)
         {
+            Name = Guid.NewGuid().ToString("D");
             current = new Bitmap(filePath);
             FileName = filePath;
             Location = new Point(0, 0);
@@ -25,6 +27,8 @@ namespace MapManager
         public Point Location { get; set; }
         
         public string FileName { get; set; }
+
+        public string Name { get; set; }
 
     }
 }
