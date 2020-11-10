@@ -22,11 +22,17 @@ namespace MapManager
 
         bool edittingImage = false;
 
+        bool asset = false;
+        Layer moding;
+
+        int overlayscale = 10;
+        Bitmap originalOverlay;
+
         public Form1()
         {
             InitializeComponent();
             mapPictureBox.Image = renderImage;
-            mapPictureBox_Resize(this, new EventArgs());
+            MapPictureBox_Resize(this, new EventArgs());
             layers.Add(new Layer() { FileName = @"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg",
                 current = new Bitmap(mapPictureBox.Image),
                 Location = new Point(0, 0) });
@@ -39,40 +45,75 @@ namespace MapManager
             LayerList.DisplayMember = "Name";
             LayerList.ValueMember = "current";
 
-            this.MouseWheel += Form1_MouseWheel;
+            MouseWheel += Form1_MouseWheel;
         }
 
         private void Form1_MouseWheel(object sender, MouseEventArgs e)
         {
+            if (edittingImage)
+            {
+                if (originalOverlay == null)
+                {
+                    if (asset)
+                    {
+                        originalOverlay = new Bitmap(overlayImage);
+                    }
+                    else
+                    {
+                        originalOverlay = new Bitmap(moding.current);
+                    }
+                }
+                
+                if (e.Delta > 0)
+                {
+                    overlayscale++;
+                }
+                else if (e.Delta < 0)
+                {
+                    if (overlayscale > 1)
+                    {
+                        overlayscale--;
+                    }
+                }
+                
+                double scale = overlayscale * .1;
+                Size scaledSize = new Size((int)(originalOverlay.Width * scale), (int)(originalOverlay.Height * scale));
 
+                Bitmap resized = new Bitmap(originalOverlay, scaledSize);
+
+                overlayImage.Dispose();
+                overlayImage = null;
+                overlayImage = new Bitmap(resized);
+                //resized.Dispose();
+                //mapPictureBox_MouseMove(sender, e);
+            }
         }
 
         private Bitmap RenderLayer()
         {
-            return Renderer.RenderLayers(layers, mapPictureBox.Image.Width,mapPictureBox.Image.Height);
-            /*Bitmap temp=new Bitmap(layers.First().current);
-
-            using (Graphics combiner = Graphics.FromImage(temp))
-            {
-                foreach (Layer lay in layers)
-                {
-                    if (!lay.Equals(layers.First())) {
-                        combiner.DrawImage(lay.current, lay.Location);
-                    }
-                }
-            }
-            return temp;*/
+            return Renderer.RenderLayers(layers, mapPictureBox.Image.Width, mapPictureBox.Image.Height);
         }
 
-        private void assetBox_Click(object sender, EventArgs e)
+        private void AssetBox_Click(object sender, EventArgs e)
         {
+            if (overlayImage != null)
+            {
+                overlayImage.Dispose();
+                overlayImage = null;
+                overlayscale = 10;
+                if (originalOverlay != null)
+                {
+                    originalOverlay.Dispose();
+                    originalOverlay = null;
+                }
+            }
+            asset = true;
             overlayImage = new Bitmap(assetBox.Image);
             mapPictureBox.Cursor = Cursors.Cross;
             edittingImage = true;
-            debugStatis.Text = "in edit mode";
         }
 
-        private void showCombinedImage()
+        private void ShowCombinedImage()
         {
             if (renderImage == null && overlayImage == null)
             {
@@ -96,33 +137,55 @@ namespace MapManager
 
             mapPictureBox.Image = combinedImage;
 
-
-
         }
 
-        private void mapPictureBox_MouseMove(object sender, MouseEventArgs e)
+        private void MapPictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (overlayImage == null)
             {
                 return;
             }
-            mousePx.Text = e.X+"  "+e.Y;
             int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
-            mousePy.Text = (x - overlayImage.Width / 2) + "    " + (y - overlayImage.Height / 2);
             overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
-            showCombinedImage();
+            ShowCombinedImage();
         }
 
-        private void mapPictureBox_Click(object sender, EventArgs e)
+        private void MapPictureBox_Click(object sender, EventArgs e)
         {
             if (overlayImage == null)
             {
                 return;
             }
+            if (originalOverlay != null)
+            {
+                if (asset)
+                {
+                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Scale = overlayscale, Location = overlayLocation, FileName = "" });
+                    asset = false;
+                }
+                else
+                {
+                    moding.Location = overlayLocation;
+                    moding.Scale = overlayscale;
+                }
 
-            layers.Add(new Layer() { current = new Bitmap(overlayImage), Location = overlayLocation, FileName = "" });
-
+                overlayscale = 10;
+                originalOverlay.Dispose();
+                originalOverlay = null;
+            }
+            else
+            {
+                if (asset)
+                {
+                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Location = overlayLocation, FileName = "" });
+                    asset = false;
+                }
+                else
+                {
+                    moding.Location = overlayLocation;
+                }
+            }
             overlayImage.Dispose();
             overlayImage = null;
             overlayLocation = new Point(0, 0);
@@ -132,10 +195,9 @@ namespace MapManager
             renderImage = new Bitmap(RenderLayer());
             mapPictureBox.Image = renderImage;
             edittingImage = false;
-            debugStatis.Text = "not in edit mode";
         }
 
-        private void mapPictureBox_Resize(object sender, EventArgs e)
+        private void MapPictureBox_Resize(object sender, EventArgs e)
         {
             scalex = Decimal.Divide(renderImage.Width, mapPictureBox.Width);
             scaley = Decimal.Divide(renderImage.Height, mapPictureBox.Height);
@@ -151,6 +213,28 @@ namespace MapManager
             {
                 Layerspic.Image = (LayerList.SelectedValue as Layer).current;
             }
+        }
+
+        private void Layerspic_Click(object sender, EventArgs e)
+        {
+            asset = false;
+            if (overlayImage != null)
+            {
+                overlayImage.Dispose();
+                overlayImage = null;
+                if (originalOverlay != null)
+                {
+                    originalOverlay.Dispose();
+                    originalOverlay = null;
+                }
+            }
+            moding = layers.ElementAt(LayerList.SelectedIndex);
+            overlayscale = moding.Scale;
+            double scale = overlayscale * .1;
+            Size scaledSize = new Size((int)(Layerspic.Image.Width * scale), (int)(Layerspic.Image.Height * scale));
+            overlayImage = new Bitmap(Layerspic.Image,scaledSize);
+            mapPictureBox.Cursor = Cursors.Cross;
+            edittingImage = true;
         }
     }
 }

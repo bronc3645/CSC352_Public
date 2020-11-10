@@ -18,7 +18,9 @@ namespace MapManager
             {
                 using (Graphics combiner = Graphics.FromImage(render))
                 {
-                    combiner.DrawImage(layer.current, layer.Location);
+                    double scale = layer.Scale * .1;
+                    Size scaledSize = new Size((int)(layer.current.Width * scale), (int)(layer.current.Height * scale));
+                    combiner.DrawImage(new Bitmap(layer.current,scaledSize), layer.Location);
                 }
             }
 
