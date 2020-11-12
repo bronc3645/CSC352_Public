@@ -18,13 +18,18 @@ namespace MapManager
             {
                 using (Graphics combiner = Graphics.FromImage(render))
                 {
-                    double scale = layer.Scale * .1;
-                    Size scaledSize = new Size((int)(layer.current.Width * scale), (int)(layer.current.Height * scale));
-                    combiner.DrawImage(new Bitmap(layer.current,scaledSize), layer.Location);
+                    combiner.DrawImage(new Bitmap(layer.current,layer.Scale), layer.Location);
                 }
             }
 
             return render;
+        }
+
+        public static Size Scale(Size original,double growpercent)
+        {
+            int scalewidth = (int)(original.Width * growpercent);
+            int scaleheight = (int)(original.Height * growpercent);
+            return new Size(scalewidth, scaleheight);
         }
     }
 }

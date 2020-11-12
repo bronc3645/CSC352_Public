@@ -136,7 +136,7 @@
             this.layersTable.Name = "layersTable";
             this.layersTable.RowCount = 2;
             this.layersTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.layersTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.layersTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layersTable.Size = new System.Drawing.Size(201, 610);
             this.layersTable.TabIndex = 5;
             // 

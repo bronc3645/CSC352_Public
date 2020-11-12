@@ -25,7 +25,7 @@ namespace MapManager
         bool asset = false;
         Layer moding;
 
-        int overlayscale = 10;
+        int overlayscale = 100;
         Bitmap originalOverlay;
 
         public Form1()
@@ -35,7 +35,8 @@ namespace MapManager
             MapPictureBox_Resize(this, new EventArgs());
             layers.Add(new Layer() { FileName = @"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg",
                 current = new Bitmap(mapPictureBox.Image),
-                Location = new Point(0, 0) });
+                Location = new Point(0, 0),
+                Scale=Renderer.Scale(renderImage.Size,1)});
             renderImage = RenderLayer();
 
             //binding the combobox to the layers list
@@ -63,29 +64,42 @@ namespace MapManager
                         originalOverlay = new Bitmap(moding.current);
                     }
                 }
+                int increasedScale = 1;
+
+                if (Control.ModifierKeys == Keys.Shift)
+                {
+                    increasedScale=10;
+                }
                 
                 if (e.Delta > 0)
                 {
-                    overlayscale++;
+                    overlayscale+=increasedScale;
                 }
                 else if (e.Delta < 0)
                 {
-                    if (overlayscale > 1)
+                    if (increasedScale == 10)
+                    {
+                        if (overlayscale > 11)
+                        {
+                            overlayscale -= increasedScale;
+                        }
+                    }
+                    else if (overlayscale > 1)
                     {
                         overlayscale--;
                     }
                 }
                 
-                double scale = overlayscale * .1;
-                Size scaledSize = new Size((int)(originalOverlay.Width * scale), (int)(originalOverlay.Height * scale));
+                double scale = overlayscale * .01;
+                Size scaledSize = new Size(originalOverlay.Width, originalOverlay.Height);
 
-                Bitmap resized = new Bitmap(originalOverlay, scaledSize);
+                Bitmap resized = new Bitmap(originalOverlay, Renderer.Scale(scaledSize,scale));
 
                 overlayImage.Dispose();
                 overlayImage = null;
                 overlayImage = new Bitmap(resized);
-                //resized.Dispose();
-                //mapPictureBox_MouseMove(sender, e);
+                resized.Dispose();
+                //MapPictureBox_MouseMove(sender, e);
             }
         }
 
@@ -100,7 +114,7 @@ namespace MapManager
             {
                 overlayImage.Dispose();
                 overlayImage = null;
-                overlayscale = 10;
+                overlayscale = 100;
                 if (originalOverlay != null)
                 {
                     originalOverlay.Dispose();
@@ -161,16 +175,19 @@ namespace MapManager
             {
                 if (asset)
                 {
-                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Scale = overlayscale, Location = overlayLocation, FileName = "" });
+                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Scale = Renderer.Scale(originalOverlay.Size, overlayscale*.01), Location = overlayLocation, FileName = "" });
                     asset = false;
                 }
                 else
                 {
-                    moding.Location = overlayLocation;
-                    moding.Scale = overlayscale;
+                    if (!moding.Equals(layers.First()))
+                    {
+                        moding.Location = overlayLocation;
+                    }
+                    moding.Scale = Renderer.Scale(moding.Scale, overlayscale*.01);
                 }
 
-                overlayscale = 10;
+                overlayscale = 100;
                 originalOverlay.Dispose();
                 originalOverlay = null;
             }
@@ -178,12 +195,15 @@ namespace MapManager
             {
                 if (asset)
                 {
-                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Location = overlayLocation, FileName = "" });
+                    layers.Add(new Layer() { current = new Bitmap(overlayImage),Scale=Renderer.Scale(overlayImage.Size,1), Location = overlayLocation, FileName = "" });
                     asset = false;
                 }
                 else
                 {
-                    moding.Location = overlayLocation;
+                    if (!moding.Equals(layers.First()))
+                    {
+                        moding.Location = overlayLocation;
+                    }
                 }
             }
             overlayImage.Dispose();
@@ -222,17 +242,12 @@ namespace MapManager
             {
                 overlayImage.Dispose();
                 overlayImage = null;
-                if (originalOverlay != null)
-                {
-                    originalOverlay.Dispose();
-                    originalOverlay = null;
-                }
+                originalOverlay?.Dispose();
+                originalOverlay = null;
             }
+            overlayscale = 100;
             moding = layers.ElementAt(LayerList.SelectedIndex);
-            overlayscale = moding.Scale;
-            double scale = overlayscale * .1;
-            Size scaledSize = new Size((int)(Layerspic.Image.Width * scale), (int)(Layerspic.Image.Height * scale));
-            overlayImage = new Bitmap(Layerspic.Image,scaledSize);
+            overlayImage = new Bitmap(Layerspic.Image,moding.Scale);
             mapPictureBox.Cursor = Cursors.Cross;
             edittingImage = true;
         }
