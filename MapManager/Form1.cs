@@ -134,8 +134,6 @@ namespace MapManager
                 return;
             }
 
-            mapPictureBox.Image = renderImage;
-
             if (combinedImage != null)
             {
                 combinedImage.Dispose();
@@ -143,12 +141,21 @@ namespace MapManager
             }
 
             combinedImage = new Bitmap(renderImage);
+            if (!asset)
+            {
+                moding.Location = overlayLocation;
+                moding.shouldrend = true;
+            }
 
             using (Graphics combiner = Graphics.FromImage(combinedImage))
             {
                 combiner.DrawImage(overlayImage, overlayLocation);
             }
 
+            if (!asset)
+            {
+                moding.shouldrend = false;
+            }
             mapPictureBox.Image = combinedImage;
 
         }
@@ -162,7 +169,20 @@ namespace MapManager
             int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
             overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
-            ShowCombinedImage();
+            //if (asset)
+            {
+                ShowCombinedImage();
+            }
+            //else
+            //{
+            //    moding.Location = overlayLocation;
+            //    moding.shouldrend = true;
+            //    Image previous = mapPictureBox.Image;
+            //    mapPictureBox.Image = RenderLayer();
+            //    previous.Dispose();
+            //    GC.Collect();
+            //    moding.shouldrend = false;
+            //}
         }
 
         private void MapPictureBox_Click(object sender, EventArgs e)
@@ -184,7 +204,12 @@ namespace MapManager
                     {
                         moding.Location = overlayLocation;
                     }
-                    moding.Scale = Renderer.Scale(moding.Scale, overlayscale*.01);
+                    else
+                    {
+                        moding.Location = new Point(0, 0);
+                    }
+                    moding.Scale = Renderer.Scale(moding.current.Size, overlayscale*.01);
+                    moding.shouldrend = true;
                 }
 
                 overlayscale = 100;
@@ -204,6 +229,11 @@ namespace MapManager
                     {
                         moding.Location = overlayLocation;
                     }
+                    else
+                    {
+                        moding.Location = new Point(0, 0);
+                    }
+                    moding.shouldrend = true;
                 }
             }
             overlayImage.Dispose();
@@ -245,8 +275,10 @@ namespace MapManager
                 originalOverlay?.Dispose();
                 originalOverlay = null;
             }
-            overlayscale = 100;
             moding = layers.ElementAt(LayerList.SelectedIndex);
+            moding.shouldrend = false;
+            renderImage = RenderLayer();
+            overlayscale = 100;
             overlayImage = new Bitmap(Layerspic.Image,moding.Scale);
             mapPictureBox.Cursor = Cursors.Cross;
             edittingImage = true;

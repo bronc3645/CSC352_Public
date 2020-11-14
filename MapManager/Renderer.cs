@@ -18,7 +18,10 @@ namespace MapManager
             {
                 using (Graphics combiner = Graphics.FromImage(render))
                 {
-                    combiner.DrawImage(new Bitmap(layer.current,layer.Scale), layer.Location);
+                    if (layer.shouldrend)
+                    {
+                        combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
+                    }
                 }
             }
 

@@ -12,6 +12,7 @@ namespace MapManager
         public Layer()
         {
             Name = Guid.NewGuid().ToString("D");
+            shouldrend = true;
         }
 
         public Layer(string filePath)
@@ -31,6 +32,8 @@ namespace MapManager
         public string Name { get; set; }
 
         public Size Scale { get; set; }
+
+        public bool shouldrend { get; set; }
 
     }
 }
