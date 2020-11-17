@@ -76,22 +76,23 @@ namespace MapManager
                     overlayscale+=increasedScale;
                 }
                 else if (e.Delta < 0)
-                {
-                    if (increasedScale == 10)
+                { 
+                    if (overlayscale -increasedScale > 1)
                     {
-                        if (overlayscale > 11)
-                        {
-                            overlayscale -= increasedScale;
-                        }
-                    }
-                    else if (overlayscale > 1)
-                    {
-                        overlayscale--;
+                        overlayscale-=increasedScale;
                     }
                 }
                 
                 double scale = overlayscale * .01;
-                Size scaledSize = new Size(originalOverlay.Width, originalOverlay.Height);
+                Size scaledSize;
+                if (asset)
+                {
+                    scaledSize = new Size(originalOverlay.Width, originalOverlay.Height);
+                }
+                else
+                {
+                    scaledSize = moding.Scale;
+                }
 
                 Bitmap resized = new Bitmap(originalOverlay, Renderer.Scale(scaledSize,scale));
 
@@ -141,21 +142,21 @@ namespace MapManager
             }
 
             combinedImage = new Bitmap(renderImage);
-            if (!asset)
-            {
-                moding.Location = overlayLocation;
-                moding.shouldrend = true;
-            }
+            //if (!asset)
+            //{
+            //    moding.Location = overlayLocation;
+            //    moding.shouldrend = true;
+            //}
 
             using (Graphics combiner = Graphics.FromImage(combinedImage))
             {
                 combiner.DrawImage(overlayImage, overlayLocation);
             }
 
-            if (!asset)
-            {
-                moding.shouldrend = false;
-            }
+            //if (!asset)
+            //{
+            //    moding.shouldrend = false;
+            //}
             mapPictureBox.Image = combinedImage;
 
         }
@@ -169,20 +170,7 @@ namespace MapManager
             int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
             overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
-            //if (asset)
-            {
-                ShowCombinedImage();
-            }
-            //else
-            //{
-            //    moding.Location = overlayLocation;
-            //    moding.shouldrend = true;
-            //    Image previous = mapPictureBox.Image;
-            //    mapPictureBox.Image = RenderLayer();
-            //    previous.Dispose();
-            //    GC.Collect();
-            //    moding.shouldrend = false;
-            //}
+            ShowCombinedImage();
         }
 
         private void MapPictureBox_Click(object sender, EventArgs e)
@@ -204,11 +192,7 @@ namespace MapManager
                     {
                         moding.Location = overlayLocation;
                     }
-                    else
-                    {
-                        moding.Location = new Point(0, 0);
-                    }
-                    moding.Scale = Renderer.Scale(moding.current.Size, overlayscale*.01);
+                    moding.Scale = Renderer.Scale(moding.Scale, overlayscale*.01);
                     moding.shouldrend = true;
                 }
 
@@ -228,10 +212,6 @@ namespace MapManager
                     if (!moding.Equals(layers.First()))
                     {
                         moding.Location = overlayLocation;
-                    }
-                    else
-                    {
-                        moding.Location = new Point(0, 0);
                     }
                     moding.shouldrend = true;
                 }
