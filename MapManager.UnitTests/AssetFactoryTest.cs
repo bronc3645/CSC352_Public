@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,21 +22,21 @@ namespace MapManager.UnitTests
         }
     }
 
-    internal class construct_validInput_Tests
+    internal class construct_validInput_Tests : IEnumerable
     {
         public IEnumerator GetEnumerator()
         {
             yield return new TestCaseData
-            {
-                Path.Combine(TestContext.CurrentContext.TestDirectory,"testData","assetFactorRestsConstruct1"),
+            (
+                Path.Combine(TestContext.CurrentContext.TestDirectory,"TestData","assetFactorTestConstruct1"),
                 new Asset[]
                 {
-                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"testData","AssetFactorTestConstruct1","Flashpoint.png")),
-                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"testData","AssetFactorTestConstruct1","Folder1","Aftershock.png")),
-                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"testData","AssetFactorTestConstruct1","Folder2","Fault_Line.png")),
-                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"testData","AssetFactorTestConstruct1","Folder2","Folder3","Rolling_Thunder.png")),
+                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"TestData","assetFactorTestConstruct1","Flashpoint.png")),
+                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"TestData","assetFactorTestConstruct1","Folder1","Aftershock.png")),
+                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"TestData","assetFactorTestConstruct1","Folder2","Fault_Line.png")),
+                    new Asset(Path.Combine(TestContext.CurrentContext.TestDirectory,"TestData","assetFactorTestConstruct1","Folder2","Folder3","Rolling_Thunder.png")),
                 }
-            }
+            );
         }
     }
 }

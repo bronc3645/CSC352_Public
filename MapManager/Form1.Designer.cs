@@ -32,7 +32,7 @@
             this.assetBox = new System.Windows.Forms.PictureBox();
             this.primaryVerticalLayout = new System.Windows.Forms.TableLayoutPanel();
             this.PrimaryHorizontalTable = new System.Windows.Forms.TableLayoutPanel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.assetList = new System.Windows.Forms.ComboBox();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.layersTable = new System.Windows.Forms.TableLayoutPanel();
             this.Layerspic = new System.Windows.Forms.PictureBox();
@@ -83,7 +83,7 @@
             this.PrimaryHorizontalTable.ColumnCount = 1;
             this.PrimaryHorizontalTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.PrimaryHorizontalTable.Controls.Add(this.assetBox, 0, 0);
-            this.PrimaryHorizontalTable.Controls.Add(this.comboBox1, 0, 1);
+            this.PrimaryHorizontalTable.Controls.Add(this.assetList, 0, 1);
             this.PrimaryHorizontalTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PrimaryHorizontalTable.Location = new System.Drawing.Point(3, 3);
             this.PrimaryHorizontalTable.Name = "PrimaryHorizontalTable";
@@ -94,20 +94,21 @@
             this.PrimaryHorizontalTable.Size = new System.Drawing.Size(206, 610);
             this.PrimaryHorizontalTable.TabIndex = 4;
             // 
-            // comboBox1
+            // assetList
             // 
-            this.comboBox1.CausesValidation = false;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.assetList.CausesValidation = false;
+            this.assetList.FormattingEnabled = true;
+            this.assetList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.assetList.Items.AddRange(new object[] {
             "Agents",
             "Weapons",
             "Abilities"});
-            this.comboBox1.Location = new System.Drawing.Point(3, 312);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(193, 24);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.TabStop = false;
+            this.assetList.Location = new System.Drawing.Point(3, 312);
+            this.assetList.Name = "assetList";
+            this.assetList.Size = new System.Drawing.Size(193, 24);
+            this.assetList.TabIndex = 1;
+            this.assetList.TabStop = false;
+            this.assetList.SelectedIndexChanged += new System.EventHandler(this.assetList_SelectedIndexChanged);
             // 
             // mapPictureBox
             // 
@@ -187,7 +188,7 @@
         private System.Windows.Forms.PictureBox assetBox;
         private System.Windows.Forms.TableLayoutPanel primaryVerticalLayout;
         private System.Windows.Forms.TableLayoutPanel PrimaryHorizontalTable;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox assetList;
         private System.Windows.Forms.PictureBox mapPictureBox;
         private System.Windows.Forms.TableLayoutPanel layersTable;
         private System.Windows.Forms.PictureBox Layerspic;

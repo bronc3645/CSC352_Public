@@ -27,6 +27,54 @@ namespace MapManager
 
             return render;
         }
+        public static Bitmap RenderUntil(IEnumerable<Layer> layers,int stop, int width,int height)
+        {
+            Bitmap render = new Bitmap(width, height);
+
+            for(int i = 0; i < layers.Count(); i++)
+            {
+                if (i== stop)
+                {
+                    break;
+                }
+                Layer layer = layers.ElementAt(i);
+                using (Graphics combiner = Graphics.FromImage(render))
+                {
+                    if (layer.shouldrend)
+                    {
+                        combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
+                    }
+                }
+            }
+
+            return render;
+        }
+        public static Bitmap RenderLast(IEnumerable<Layer> layers, int start,Bitmap current)
+        {
+            Bitmap render = new Bitmap(current);
+
+            if (start + 1 != layers.Count())
+            {
+                for (int i = start + 1; i < layers.Count(); i++)
+                {
+                    Layer layer = layers.ElementAt(i);
+                    using (Graphics combiner = Graphics.FromImage(render))
+                    {
+                        if (layer.shouldrend)
+                        {
+                            combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                render.Dispose();
+                render = null;
+            }
+
+            return render;
+        }
 
         public static Size Scale(Size original,double growpercent)
         {

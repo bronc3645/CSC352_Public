@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -24,9 +25,14 @@ namespace MapManager
 
         bool asset = false;
         Layer moding;
+        int modingindex = -1;
 
         int overlayscale = 100;
         Bitmap originalOverlay;
+
+        int layersAt = 0;
+
+        string assetcurrentPath;
 
         public Form1()
         {
@@ -36,15 +42,24 @@ namespace MapManager
             layers.Add(new Layer() { FileName = @"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg",
                 current = new Bitmap(mapPictureBox.Image),
                 Location = new Point(0, 0),
-                Scale=Renderer.Scale(renderImage.Size,1)});
+                Scale=Renderer.Scale(renderImage.Size,1),
+                Name=Path.GetFileNameWithoutExtension(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg")+" "+layersAt
+            });
+            layersAt++;
             renderImage = RenderLayer();
-
             //binding the combobox to the layers list
             BindingSource layersbindingsource = new BindingSource();
             layersbindingsource.DataSource = layers;
             LayerList.DataSource = layersbindingsource.DataSource;
             LayerList.DisplayMember = "Name";
             LayerList.ValueMember = "current";
+
+            //binding the combox to the asset list
+            BindingSource assetsource = new BindingSource();
+            assetsource.DataSource = AssetFactory.Construct(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets");
+            assetList.DataSource = assetsource.DataSource;
+            assetList.DisplayMember = "Name";
+            assetList.ValueMember = "FilePath";
 
             MouseWheel += Form1_MouseWheel;
         }
@@ -123,7 +138,7 @@ namespace MapManager
                 }
             }
             asset = true;
-            overlayImage = new Bitmap(assetBox.Image);
+            overlayImage = new Bitmap(assetcurrentPath);
             mapPictureBox.Cursor = Cursors.Cross;
             edittingImage = true;
         }
@@ -140,23 +155,20 @@ namespace MapManager
                 combinedImage.Dispose();
                 combinedImage = null;
             }
-
             combinedImage = new Bitmap(renderImage);
-            //if (!asset)
-            //{
-            //    moding.Location = overlayLocation;
-            //    moding.shouldrend = true;
-            //}
-
             using (Graphics combiner = Graphics.FromImage(combinedImage))
             {
                 combiner.DrawImage(overlayImage, overlayLocation);
+                if (!asset)
+                {
+                    Bitmap temp = Renderer.RenderLast(layers, modingindex, renderImage);
+                    if (temp != null)
+                    {
+                        combiner.DrawImage(temp, new Point(0, 0));
+                        temp.Dispose();
+                    }
+                }
             }
-
-            //if (!asset)
-            //{
-            //    moding.shouldrend = false;
-            //}
             mapPictureBox.Image = combinedImage;
 
         }
@@ -170,6 +182,8 @@ namespace MapManager
             int x = (int)(e.X * scalex);
             int y = (int)(e.Y * scaley);
             overlayLocation = new Point(x - overlayImage.Width / 2, y - overlayImage.Height / 2);
+            
+            
             ShowCombinedImage();
         }
 
@@ -183,7 +197,13 @@ namespace MapManager
             {
                 if (asset)
                 {
-                    layers.Add(new Layer() { current = new Bitmap(originalOverlay), Scale = Renderer.Scale(originalOverlay.Size, overlayscale*.01), Location = overlayLocation, FileName = "" });
+                    layers.Add(new Layer() { current = new Bitmap(originalOverlay),
+                        Scale = Renderer.Scale(originalOverlay.Size, overlayscale*.01),
+                        Location = overlayLocation,
+                        FileName = assetcurrentPath,
+                        Name=Path.GetFileNameWithoutExtension(assetcurrentPath)+" "+layersAt
+                    });
+                    layersAt++;
                     asset = false;
                 }
                 else
@@ -204,7 +224,13 @@ namespace MapManager
             {
                 if (asset)
                 {
-                    layers.Add(new Layer() { current = new Bitmap(overlayImage),Scale=Renderer.Scale(overlayImage.Size,1), Location = overlayLocation, FileName = "" });
+                    layers.Add(new Layer() { current = new Bitmap(overlayImage),
+                        Scale=Renderer.Scale(overlayImage.Size,1),
+                        Location = overlayLocation,
+                        FileName = assetcurrentPath,
+                        Name=Path.GetFileNameWithoutExtension(assetcurrentPath)+" "+layersAt
+                    });
+                    layersAt++;
                     asset = false;
                 }
                 else
@@ -256,12 +282,38 @@ namespace MapManager
                 originalOverlay = null;
             }
             moding = layers.ElementAt(LayerList.SelectedIndex);
+            modingindex = LayerList.SelectedIndex;
             moding.shouldrend = false;
-            renderImage = RenderLayer();
+            Bitmap previous =renderImage;
+            renderImage = Renderer.RenderUntil(layers,modingindex, mapPictureBox.Image.Width, mapPictureBox.Image.Height);
+            previous.Dispose();
             overlayscale = 100;
             overlayImage = new Bitmap(Layerspic.Image,moding.Scale);
             mapPictureBox.Cursor = Cursors.Cross;
             edittingImage = true;
+        }
+
+        private void assetList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string assetFilePath;
+
+            if (assetList.SelectedValue is string)
+            {
+                assetFilePath = assetList.SelectedValue as string;
+            }
+            else if(assetList.SelectedValue is Asset)
+            {
+                assetFilePath = (assetList.SelectedValue as Asset).FilePath;
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            
+            Bitmap assetpic = new Bitmap(assetFilePath);
+
+            assetBox.Image = assetpic;
+            assetcurrentPath = assetFilePath;
         }
     }
 }

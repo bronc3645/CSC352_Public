@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,12 @@ namespace MapManager
     {
         public Layer()
         {
-            Name = Guid.NewGuid().ToString("D");
             shouldrend = true;
         }
 
         public Layer(string filePath)
         {
-            Name = Guid.NewGuid().ToString("D");
+            Name = Path.GetFileNameWithoutExtension(filePath);
             current = new Bitmap(filePath);
             FileName = filePath;
             Location = new Point(0, 0);

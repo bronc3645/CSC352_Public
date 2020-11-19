@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace MapManager
 {
@@ -6,17 +7,17 @@ namespace MapManager
     {
         public Asset(string filePath)
         {
-            this.filePath = filePath;
-
+            this.FilePath = filePath;
+            Name = Path.GetFileNameWithoutExtension(filePath);
             
         }
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string filePath { get; set; }
+        public string FilePath { get; set; }
 
         public override int GetHashCode()
         {
-            return filePath.GetHashCode();
+            return FilePath.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -33,7 +34,7 @@ namespace MapManager
             }
             else if (other.GetHashCode() == GetHashCode())
             {
-                if (other.filePath.Equals(filePath)&&other.name.Equals(name))
+                if (other.FilePath.Equals(FilePath)&&other.Name.Equals(Name))
                 {
                     isEqual = true;
                 }
@@ -44,7 +45,7 @@ namespace MapManager
 
         public override string ToString()
         {
-            return filePath;
+            return FilePath;
         }
     }
 }
