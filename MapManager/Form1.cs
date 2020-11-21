@@ -43,7 +43,7 @@ namespace MapManager
                 current = new Bitmap(mapPictureBox.Image),
                 Location = new Point(0, 0),
                 Scale=Renderer.Scale(renderImage.Size,1),
-                Name=Path.GetFileNameWithoutExtension(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\JPG Maps\ascent_callouts.jpg")+" "+layersAt
+                Name = "Base " + layersAt
             });
             layersAt++;
             renderImage = RenderLayer();
@@ -161,13 +161,12 @@ namespace MapManager
                 combiner.DrawImage(overlayImage, overlayLocation);
                 if (!asset)
                 {
-                    Bitmap temp = Renderer.RenderLast(layers, modingindex, renderImage);
-                    if (temp != null)
-                    {
-                        combiner.DrawImage(temp, new Point(0, 0));
-                        temp.Dispose();
-                    }
+                    Renderer.RenderLast(layers, modingindex, combinedImage); 
                 }
+            }
+            if (!asset)
+            {
+                mapPictureBox.Image.Dispose();
             }
             mapPictureBox.Image = combinedImage;
 
@@ -214,6 +213,8 @@ namespace MapManager
                     }
                     moding.Scale = Renderer.Scale(moding.Scale, overlayscale*.01);
                     moding.shouldrend = true;
+                    moding = null;
+                    modingindex = -1;
                 }
 
                 overlayscale = 100;
@@ -240,6 +241,8 @@ namespace MapManager
                         moding.Location = overlayLocation;
                     }
                     moding.shouldrend = true;
+                    moding = null;
+                    modingindex = -1;
                 }
             }
             overlayImage.Dispose();
@@ -281,6 +284,10 @@ namespace MapManager
                 originalOverlay?.Dispose();
                 originalOverlay = null;
             }
+            if (moding != null)
+            {
+                moding.shouldrend = true;
+            }
             moding = layers.ElementAt(LayerList.SelectedIndex);
             modingindex = LayerList.SelectedIndex;
             moding.shouldrend = false;
@@ -314,6 +321,47 @@ namespace MapManager
 
             assetBox.Image = assetpic;
             assetcurrentPath = assetFilePath;
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "JPEG (*.jpg)|*.jpg|Bitmap (*.bmp)|*.bmp";
+                DialogResult result = ofd.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    mapPictureBox.Image = new Bitmap(ofd.FileName);
+                    layers.Clear();
+                    layersAt = 0;
+                    layers.Add(new Layer() { 
+                        Name = "Base " + layersAt,
+                        FileName = ofd.FileName,
+                        current = new Bitmap(ofd.FileName),
+                        Location=new Point(0,0),
+                        Scale=Renderer.Scale(mapPictureBox.Image.Size,1)
+                    });
+                    layersAt++;
+                    renderImage.Dispose();
+                    renderImage = RenderLayer();
+                    LayerList_SelectedValueChanged(this, new EventArgs());
+                    MapPictureBox_Resize(this, new EventArgs());
+                }
+            }
+            GC.Collect();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Bitmap(*.bmp)|*.bmp";
+                DialogResult result = sfd.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    mapPictureBox.Image.Save(sfd.FileName);
+                }
+            }
         }
     }
 }

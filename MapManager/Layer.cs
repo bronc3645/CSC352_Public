@@ -35,5 +35,6 @@ namespace MapManager
 
         public bool shouldrend { get; set; }
 
+
     }
 }

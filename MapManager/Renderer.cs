@@ -20,7 +20,9 @@ namespace MapManager
                 {
                     if (layer.shouldrend)
                     {
-                        combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
+                        Bitmap temp = new Bitmap(layer.current, layer.Scale);
+                        combiner.DrawImage(temp, layer.Location);
+                        temp.Dispose();
                     }
                 }
             }
@@ -42,7 +44,9 @@ namespace MapManager
                 {
                     if (layer.shouldrend)
                     {
-                        combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
+                        Bitmap temp = new Bitmap(layer.current, layer.Scale);
+                        combiner.DrawImage(temp, layer.Location);
+                        temp.Dispose();
                     }
                 }
             }
@@ -51,26 +55,20 @@ namespace MapManager
         }
         public static Bitmap RenderLast(IEnumerable<Layer> layers, int start,Bitmap current)
         {
-            Bitmap render = new Bitmap(current);
+            Bitmap render =current;
 
-            if (start + 1 != layers.Count())
+            for (int i = start; i < layers.Count(); i++)
             {
-                for (int i = start + 1; i < layers.Count(); i++)
+                Layer layer = layers.ElementAt(i);
+                using (Graphics combiner = Graphics.FromImage(render))
                 {
-                    Layer layer = layers.ElementAt(i);
-                    using (Graphics combiner = Graphics.FromImage(render))
+                    if (layer.shouldrend)
                     {
-                        if (layer.shouldrend)
-                        {
-                            combiner.DrawImage(new Bitmap(layer.current, layer.Scale), layer.Location);
-                        }
+                        Bitmap temp = new Bitmap(layer.current, layer.Scale);
+                        combiner.DrawImage(temp, layer.Location);
+                        temp.Dispose();
                     }
                 }
-            }
-            else
-            {
-                render.Dispose();
-                render = null;
             }
 
             return render;
