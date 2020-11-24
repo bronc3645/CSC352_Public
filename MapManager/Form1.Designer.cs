@@ -32,7 +32,7 @@
             this.assetBox = new System.Windows.Forms.PictureBox();
             this.primaryVerticalLayout = new System.Windows.Forms.TableLayoutPanel();
             this.PrimaryHorizontalTable = new System.Windows.Forms.TableLayoutPanel();
-            this.assetList = new System.Windows.Forms.ComboBox();
+            this.PathList = new System.Windows.Forms.ComboBox();
             this.mapPictureBox = new System.Windows.Forms.PictureBox();
             this.layersTable = new System.Windows.Forms.TableLayoutPanel();
             this.Layerspic = new System.Windows.Forms.PictureBox();
@@ -41,6 +41,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AssetList = new System.Windows.Forms.ComboBox();
+            this.furtherPathList = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.assetBox)).BeginInit();
             this.primaryVerticalLayout.SuspendLayout();
             this.PrimaryHorizontalTable.SuspendLayout();
@@ -74,11 +76,11 @@
             this.primaryVerticalLayout.Controls.Add(this.mapPictureBox, 1, 0);
             this.primaryVerticalLayout.Controls.Add(this.layersTable, 2, 0);
             this.primaryVerticalLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.primaryVerticalLayout.Location = new System.Drawing.Point(0, 28);
+            this.primaryVerticalLayout.Location = new System.Drawing.Point(0, 30);
             this.primaryVerticalLayout.Name = "primaryVerticalLayout";
             this.primaryVerticalLayout.RowCount = 1;
             this.primaryVerticalLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.primaryVerticalLayout.Size = new System.Drawing.Size(832, 588);
+            this.primaryVerticalLayout.Size = new System.Drawing.Size(832, 586);
             this.primaryVerticalLayout.TabIndex = 3;
             // 
             // PrimaryHorizontalTable
@@ -88,32 +90,36 @@
             this.PrimaryHorizontalTable.ColumnCount = 1;
             this.PrimaryHorizontalTable.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.PrimaryHorizontalTable.Controls.Add(this.assetBox, 0, 0);
-            this.PrimaryHorizontalTable.Controls.Add(this.assetList, 0, 1);
+            this.PrimaryHorizontalTable.Controls.Add(this.PathList, 0, 1);
+            this.PrimaryHorizontalTable.Controls.Add(this.AssetList, 0, 3);
+            this.PrimaryHorizontalTable.Controls.Add(this.furtherPathList, 0, 2);
             this.PrimaryHorizontalTable.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PrimaryHorizontalTable.Location = new System.Drawing.Point(3, 3);
             this.PrimaryHorizontalTable.Name = "PrimaryHorizontalTable";
-            this.PrimaryHorizontalTable.RowCount = 3;
+            this.PrimaryHorizontalTable.RowCount = 4;
             this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.PrimaryHorizontalTable.Size = new System.Drawing.Size(206, 582);
+            this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 31F));
+            this.PrimaryHorizontalTable.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 9F));
+            this.PrimaryHorizontalTable.Size = new System.Drawing.Size(206, 580);
             this.PrimaryHorizontalTable.TabIndex = 4;
             // 
-            // assetList
+            // PathList
             // 
-            this.assetList.CausesValidation = false;
-            this.assetList.FormattingEnabled = true;
-            this.assetList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.assetList.Items.AddRange(new object[] {
+            this.PathList.CausesValidation = false;
+            this.PathList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PathList.FormattingEnabled = true;
+            this.PathList.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.PathList.Items.AddRange(new object[] {
             "Agents",
             "Weapons",
             "Abilities"});
-            this.assetList.Location = new System.Drawing.Point(3, 312);
-            this.assetList.Name = "assetList";
-            this.assetList.Size = new System.Drawing.Size(193, 24);
-            this.assetList.TabIndex = 1;
-            this.assetList.TabStop = false;
-            this.assetList.SelectedIndexChanged += new System.EventHandler(this.assetList_SelectedIndexChanged);
+            this.PathList.Location = new System.Drawing.Point(3, 312);
+            this.PathList.Name = "PathList";
+            this.PathList.Size = new System.Drawing.Size(200, 24);
+            this.PathList.TabIndex = 1;
+            this.PathList.TabStop = false;
+            this.PathList.SelectedIndexChanged += new System.EventHandler(this.PathList_SelectedIndexChanged);
             // 
             // mapPictureBox
             // 
@@ -121,7 +127,7 @@
             this.mapPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("mapPictureBox.Image")));
             this.mapPictureBox.Location = new System.Drawing.Point(215, 3);
             this.mapPictureBox.Name = "mapPictureBox";
-            this.mapPictureBox.Size = new System.Drawing.Size(407, 582);
+            this.mapPictureBox.Size = new System.Drawing.Size(407, 580);
             this.mapPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mapPictureBox.TabIndex = 0;
             this.mapPictureBox.TabStop = false;
@@ -143,7 +149,7 @@
             this.layersTable.RowCount = 2;
             this.layersTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layersTable.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.layersTable.Size = new System.Drawing.Size(201, 582);
+            this.layersTable.Size = new System.Drawing.Size(201, 580);
             this.layersTable.TabIndex = 5;
             // 
             // Layerspic
@@ -174,7 +180,7 @@
             this.fileToolStripMenuItem});
             this.ToolStrip.Location = new System.Drawing.Point(0, 0);
             this.ToolStrip.Name = "ToolStrip";
-            this.ToolStrip.Size = new System.Drawing.Size(832, 28);
+            this.ToolStrip.Size = new System.Drawing.Size(832, 30);
             this.ToolStrip.TabIndex = 4;
             this.ToolStrip.Text = "menuStrip1";
             // 
@@ -184,22 +190,39 @@
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(125, 26);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(125, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // AssetList
+            // 
+            this.AssetList.FormattingEnabled = true;
+            this.AssetList.Location = new System.Drawing.Point(3, 373);
+            this.AssetList.Name = "AssetList";
+            this.AssetList.Size = new System.Drawing.Size(200, 24);
+            this.AssetList.TabIndex = 3;
+            this.AssetList.SelectedIndexChanged += new System.EventHandler(this.assetList_SelectedIndexChanged);
+            // 
+            // furtherPathList
+            // 
+            this.furtherPathList.FormattingEnabled = true;
+            this.furtherPathList.Location = new System.Drawing.Point(3, 342);
+            this.furtherPathList.Name = "furtherPathList";
+            this.furtherPathList.Size = new System.Drawing.Size(200, 24);
+            this.furtherPathList.TabIndex = 4;
             // 
             // Form1
             // 
@@ -231,7 +254,7 @@
         private System.Windows.Forms.PictureBox assetBox;
         private System.Windows.Forms.TableLayoutPanel primaryVerticalLayout;
         private System.Windows.Forms.TableLayoutPanel PrimaryHorizontalTable;
-        private System.Windows.Forms.ComboBox assetList;
+        private System.Windows.Forms.ComboBox PathList;
         private System.Windows.Forms.PictureBox mapPictureBox;
         private System.Windows.Forms.TableLayoutPanel layersTable;
         private System.Windows.Forms.PictureBox Layerspic;
@@ -240,6 +263,8 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ComboBox AssetList;
+        private System.Windows.Forms.ComboBox furtherPathList;
     }
 }
 

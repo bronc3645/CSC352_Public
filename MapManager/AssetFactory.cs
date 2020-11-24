@@ -29,5 +29,17 @@ namespace MapManager
 
             return assets;
         }
+        public static IEnumerable<Asset> Constructpath(string assetDirectory)
+        {
+            IList<Asset> assets = new List<Asset>();
+            var allAssetPaths = Directory.EnumerateDirectories(assetDirectory);
+
+            foreach (var assetPath in allAssetPaths)
+            {
+                assets.Add(new Asset(assetPath));
+            }
+
+            return assets;
+        }
     }
 }

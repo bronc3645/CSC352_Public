@@ -34,6 +34,11 @@ namespace MapManager
 
         string assetcurrentPath;
 
+        BindingSource assetsource = new BindingSource();
+        BindingSource pathsource = new BindingSource();
+        BindingSource furtherpathsource = new BindingSource();
+
+
         public Form1()
         {
             InitializeComponent();
@@ -55,11 +60,20 @@ namespace MapManager
             LayerList.ValueMember = "current";
 
             //binding the combox to the asset list
-            BindingSource assetsource = new BindingSource();
-            assetsource.DataSource = AssetFactory.Construct(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets");
-            assetList.DataSource = assetsource.DataSource;
-            assetList.DisplayMember = "Name";
-            assetList.ValueMember = "FilePath";
+            pathsource.DataSource = AssetFactory.Constructpath(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets");
+            PathList.DataSource = pathsource.DataSource;
+            PathList.DisplayMember = "Name";
+            PathList.ValueMember = "FilePath";
+
+            furtherpathsource.DataSource = AssetFactory.Constructpath(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\Abilities");
+            furtherPathList.DataSource = furtherpathsource.DataSource;
+            furtherPathList.DisplayMember = "Name";
+            furtherPathList.ValueMember = "FilePath";
+
+            assetsource.DataSource = AssetFactory.Construct(@"C:\Users\kingd\Documents\GitHub\CSC352_Public\MapManager\Assets\Abilities\Breach");
+            AssetList.DataSource = assetsource.DataSource;
+            AssetList.DisplayMember = "Name";
+            AssetList.ValueMember = "FilePath";
 
             MouseWheel += Form1_MouseWheel;
         }
@@ -304,13 +318,13 @@ namespace MapManager
         {
             string assetFilePath;
 
-            if (assetList.SelectedValue is string)
+            if (AssetList.SelectedValue is string)
             {
-                assetFilePath = assetList.SelectedValue as string;
+                assetFilePath = AssetList.SelectedValue as string;
             }
-            else if(assetList.SelectedValue is Asset)
+            else if(AssetList.SelectedValue is Asset)
             {
-                assetFilePath = (assetList.SelectedValue as Asset).FilePath;
+                assetFilePath = (AssetList.SelectedValue as Asset).FilePath;
             }
             else
             {
@@ -362,6 +376,17 @@ namespace MapManager
                     mapPictureBox.Image.Save(sfd.FileName);
                 }
             }
+        }
+
+        private void PathList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            furtherpathsource.Clear();
+            furtherpathsource.DataSource = AssetFactory.Constructpath((PathList.SelectedValue as Asset).FilePath);
+            furtherPathList.DataSource = furtherpathsource.DataSource;
+
+            assetsource.Clear();
+            assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
+            AssetList.DataSource = assetsource.DataSource;
         }
     }
 }
