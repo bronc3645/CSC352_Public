@@ -381,11 +381,54 @@ namespace MapManager
         private void PathList_SelectedIndexChanged(object sender, EventArgs e)
         {
             furtherpathsource.Clear();
-            furtherpathsource.DataSource = AssetFactory.Constructpath((PathList.SelectedValue as Asset).FilePath);
+            if (PathList.SelectedValue is string)
+            {
+                furtherpathsource.DataSource = AssetFactory.Constructpath((PathList.SelectedValue as string));
+            }
+            else if (PathList.SelectedValue is Asset)
+            {
+                furtherpathsource.DataSource = AssetFactory.Constructpath((PathList.SelectedValue as Asset).FilePath);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            //furtherpathsource.DataSource = AssetFactory.Constructpath((PathList.SelectedValue as Asset).FilePath);
             furtherPathList.DataSource = furtherpathsource.DataSource;
 
             assetsource.Clear();
-            assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
+            if (furtherPathList.SelectedValue is string)
+            {
+                assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as string));
+            }
+            else if (furtherPathList.SelectedValue is Asset)
+            {
+                assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            //assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
+            AssetList.DataSource = assetsource.DataSource;
+        }
+
+        private void furtherPathList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            assetsource.Clear();
+            if (furtherPathList.SelectedValue is string)
+            {
+                assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as string));
+            }
+            else if (furtherPathList.SelectedValue is Asset)
+            {
+                assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
+            //assetsource.DataSource = AssetFactory.Construct((furtherPathList.SelectedValue as Asset).FilePath);
             AssetList.DataSource = assetsource.DataSource;
         }
     }
